@@ -24,8 +24,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         self.pb_addtransaction.clicked.connect(self.populateDropBox)
         self.current_nr_of_acc = self.countCurrentNrOfAcs()
         element = self.populateDropBox()
-        actual_element = self.splitIntoList(element)
-        print(actual_element)
+        actual_element = self.splitIntoList(element) # ACTUAL_ELEMENT
         self.cb_dropdown.addItems(actual_element)
         #self.cb_dropdown.removeItem()
         self.pb_removeacc.clicked.connect(self.removeAcc)
@@ -38,8 +37,8 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
     def setData(self): 
         db = sqlite3.connect("expense_tracker.db")
         d = db.cursor()
-        curr_text = self.cb_dropdown.currentText()
-        print(curr_text)
+        curr_text = self.cb_dropdown.currentText() # CURRENT DROPDOWN TEXT
+        
         d.execute("SELECT accounts_id from accounts_test WHERE name = :name  AND userid = :userid" ,
         {'name': curr_text , 'userid': self.current_acc_id})
         temp = d.fetchone()
@@ -47,31 +46,58 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         if temp != None:
             for i in temp:
                 accid +=str(i)
+                
             accid = int(accid)
 
         d.execute("SELECT * from transactions WHERE account_id = :accid" , {'accid': accid})
-        temp2 = d.fetchone()
+        temp2 = d.fetchall()
+        
         list_of_transactions = []
     
         if temp2 != None:
             for i in temp2:
                 list_of_transactions.append(i)
-        dict = {"id": list_of_transactions[0] , "name" : list_of_transactions[1], "value" : list_of_transactions[2], "budget": list_of_transactions[3], "date": list_of_transactions[4]}
-        print(dict)
         print(list_of_transactions)
-        self.tw_showinfo.setRowCount(len(dict))
-        # for i, name , value, budget, date in enumerate(list_of_trans):
-        id = QtWidgets.QTableWidgetItem(dict["id"])
-        name = QtWidgets.QTableWidgetItem(dict["name"])
-        value = QtWidgets.QTableWidgetItem(str(dict["value"]))
-        budget = QtWidgets.QTableWidgetItem(str(dict["budget"]))
-        date = QtWidgets.QTableWidgetItem(dict["date"])
-        self.tw_showinfo.setItem(1, 0, id)
-        self.tw_showinfo.setItem(0, 3, value)
-        self.tw_showinfo.setItem(0, 1, budget)
-        self.tw_showinfo.setItem(0, 4, date)
-        self.tw_showinfo.setItem(0,2, name)
+        id = []
+        name = []
+        value = []
+        budget = []
+        date = []
+        if list_of_transactions != None:
+            for i in range(len(list_of_transactions)):
+                    id.append(list_of_transactions[i][0])
+                    name.append(list_of_transactions[i][1])
+                    value.append(list_of_transactions[i][2])
+                    budget.append(list_of_transactions[i][3])
+                    date.append(list_of_transactions[i][4])
+
+
+            #print(id[1], name[0], value[1], budget[1], date[0])
+
+
+            
+            self.tw_showinfo.setRowCount(len(list_of_transactions))
+            # print("AICI E LISTA ", id)
+            row = 0
+            # print(id[0])
+            # print(type(id[0]))
+            for j in range(len(id)):
+                id_tabel = QtWidgets.QTableWidgetItem(str(id[j]))
+                name_tabel = QtWidgets.QTableWidgetItem(str(name[j]))
+                value_tabel = QtWidgets.QTableWidgetItem(str(value[j]))
+                budget_tabel = QtWidgets.QTableWidgetItem(str(budget[j]))
+                date_tabel = QtWidgets.QTableWidgetItem(str(date[j]))
+                self.tw_showinfo.setItem(row, 0, id_tabel)
+                self.tw_showinfo.setItem(row, 3, value_tabel)
+                self.tw_showinfo.setItem(row, 1, budget_tabel)
+                self.tw_showinfo.setItem(row, 4, date_tabel)
+                self.tw_showinfo.setItem(row, 2, name_tabel)
+                row+=1
+
+
+
     def logout(self):
+
         QApplication.exit()
         
         
