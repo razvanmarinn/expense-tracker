@@ -15,5 +15,7 @@ def add_Values():
     db.commit()
 def create_table_accounts():
     d.execute("""CREATE TABLE accounts_test (accounts_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , balance REAL,userid INTEGER, FOREIGN KEY(userid) REFERENCES users(id))""")
+def create_transaction_table():
+    d.execute("""CREATE TABLE transactions (transaction_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , balance REAL, value REAL,date TEXT, account_id INTEGER, FOREIGN KEY(account_id) REFERENCES accounts_test(accounts_id))""")
 
-create_table_accounts()
+create_transaction_table()
