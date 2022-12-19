@@ -6,33 +6,33 @@ import time
 from datetime import datetime
 from PyQt6 import QtWidgets
 from UI.popup import Ui_PopupForm
-from templates.classes import Account
+from templates.transactions_popup import TransactionPopup
 
 class AccountsFormTab(QDialog, Ui_AccountsForm):
     
     def __init__(self, LoginForm):
-        data = []
         super().__init__()
         self.setupUi(self, LoginForm)
         self.show()
-        self.loginf = LoginForm
-        self.pb_addacc.clicked.connect(self.create_popup)
-        #self.id = LoginForm.idofacc
-        self.MAX_ACCOUNTS_PER_USER = 3
-        self.current_acc_id = LoginForm.idd[0]
-        self.l_accounts.setText(str(self.current_acc_id))
-        self.pb_addtransaction.clicked.connect(self.populateDropBox)
+        self.loginf = LoginForm # LOGIN FORM PASSED TO GET INFO FROM IT
+        self.MAX_ACCOUNTS_PER_USER = 3 # STATIC VARIABLE
+        self.current_acc_id = LoginForm.idd[0] # CURRENT ID OF THE USER ACC
+       
+        #
         self.current_nr_of_acc = self.countCurrentNrOfAcs()
-        element = self.populateDropBox()
+        #add items to dropdown box
+        element = self.getNameOfTheAccountsOfThisId() # NAMES OF THE ACCOUNTS
         actual_element = self.splitIntoList(element) # ACTUAL_ELEMENT
         self.cb_dropdown.addItems(actual_element)
-        #self.cb_dropdown.removeItem()
+
+        self.pb_addacc.clicked.connect(self.create_popup)
         self.pb_removeacc.clicked.connect(self.removeAcc)
         self.pb_logout.clicked.connect(self.logout)
-        self.setData()
-        #self.tw_showinfo.setRowCount(3)
-        #self.tw_showinfo.setItem(0,0, QtWidgets.QTableWidgetItem("TEST")
-        self.data = data
+        self.pb_addtransaction.clicked.connect(self.createTransactionPopup)
+        self.setData() # SET DATA IN THE TABLE
+
+        
+        
     
     def setData(self): 
         db = sqlite3.connect("expense_tracker.db")
@@ -57,7 +57,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         if temp2 != None:
             for i in temp2:
                 list_of_transactions.append(i)
-        print(list_of_transactions)
+        #print(list_of_transactions)
         id = []
         name = []
         value = []
@@ -67,20 +67,19 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
             for i in range(len(list_of_transactions)):
                     id.append(list_of_transactions[i][0])
                     name.append(list_of_transactions[i][1])
-                    value.append(list_of_transactions[i][2])
+                    value.append(list_of_transactions[i][2]) 
                     budget.append(list_of_transactions[i][3])
                     date.append(list_of_transactions[i][4])
 
 
-            #print(id[1], name[0], value[1], budget[1], date[0])
+        
 
 
             
             self.tw_showinfo.setRowCount(len(list_of_transactions))
-            # print("AICI E LISTA ", id)
+          
             row = 0
-            # print(id[0])
-            # print(type(id[0]))
+           
             for j in range(len(id)):
                 id_tabel = QtWidgets.QTableWidgetItem(str(id[j]))
                 name_tabel = QtWidgets.QTableWidgetItem(str(name[j]))
@@ -94,14 +93,17 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
                 self.tw_showinfo.setItem(row, 2, name_tabel)
                 row+=1
 
+    def createTransactionPopup(self):
+        transaction = TransactionPopup(self)
+        transaction.show()
+
 
 
     def logout(self):
 
         QApplication.exit()
         
-        
-
+ 
     def removeAcc(self):
         
         db = sqlite3.connect("expense_tracker.db")
@@ -137,7 +139,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         return noOfAcc
 
 
-    def populateDropBox(self):
+    def getNameOfTheAccountsOfThisId(self):
         db = sqlite3.connect("expense_tracker.db")
         d = db.cursor()
         d.execute("SELECT name FROM accounts_test WHERE userid = :id", 
@@ -146,14 +148,9 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
             
         })
         result = d.fetchall()
-        print(result)
+        #print(result)
         str_result = "".join(map(str, result)).replace("'", "").replace("(", "").replace(")", "").replace(",", " ")
         
-
-        # for i in range(noOfAcc):
-            
-        #     print(str_result)
-            # self.cb_dropdown.addItem()
         return str_result
 
 
@@ -223,8 +220,3 @@ class PopUpWindowAcc(QDialog, Ui_PopupForm):
 
 
 
-
-# app = QApplication(sys.argv)
-# Account = AccountsFormTab()
-
-# sys.exit(app.exec())
