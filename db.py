@@ -1,9 +1,5 @@
 import sqlite3
 
-
-
-
-
 db = sqlite3.connect("expense_tracker.db")
 d = db.cursor()
 
