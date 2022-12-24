@@ -6,6 +6,7 @@ from templates.transactions_popup import TransactionPopup
 from templates.createacc_popup import PopUpWindowAcc
 from templates.Buttons import RemoveAccButton
 from templates.Util import Utility
+from templates.analysis import GraphForm
 
 
 class AccountsFormTab(QDialog, Ui_AccountsForm):
@@ -20,7 +21,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         self.RemoveButton = RemoveAccButton(self)
         self.Utility = Utility(self)
         self.current_ACCOUNT_id = 0 # CURRENT ACCOUNT ID 
-
+        self.pb_analyze.clicked.connect(self.create_analysis_popup)
 
         self.current_nr_of_acc = self.Utility.countCurrentNrOfAcs()
         #add items to dropdown box
@@ -110,6 +111,10 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
     def create_popup(self):
         pop = PopUpWindowAcc(self)
         pop.show()
+    def create_analysis_popup(self):
+        analysis = GraphForm(self)
+        analysis.show()
+
 
     def logout(self):
         QApplication.exit()
