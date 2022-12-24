@@ -16,10 +16,12 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         self.show()
         self.loginf = LoginForm # LOGIN FORM PASSED TO GET INFO FROM IT
         self.MAX_ACCOUNTS_PER_USER = 3 # STATIC VARIABLE
-        self.current_acc_id = LoginForm.idd[0] # CURRENT ID OF THE USER ACC
+        self.current_acc_id = LoginForm.idd[0] # CURRENT ID OF THE USER
         self.RemoveButton = RemoveAccButton(self)
         self.Utility = Utility(self)
-    
+        self.current_ACCOUNT_id = 0 # CURRENT ACCOUNT ID 
+
+
         self.current_nr_of_acc = self.Utility.countCurrentNrOfAcs()
         #add items to dropdown box
         element = self.Utility.getNameOfTheAccountsOfThisId() # NAMES OF THE ACCOUNTS
@@ -52,7 +54,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
                 accid +=str(i)
                 
             accid = int(accid)
-        print(accid)
+        self.current_ACCOUNT_id = accid
         d.execute("SELECT * from transactions WHERE account_id = :accid" , {'accid': accid})
         temp2 = d.fetchall()
         
@@ -61,11 +63,11 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         if temp2 != None:
             for i in temp2:
                 list_of_transactions.append(i)
-        #print(list_of_transactions)
         id = []
         name = []
         value = []
         budget = []
+        type = []
         date = []
         if list_of_transactions != None:
             for i in range(len(list_of_transactions)):
@@ -73,7 +75,8 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
                     name.append(list_of_transactions[i][1])
                     value.append(list_of_transactions[i][2]) 
                     budget.append(list_of_transactions[i][3])
-                    date.append(list_of_transactions[i][4])
+                    type.append(list_of_transactions[i][4])
+                    date.append(list_of_transactions[i][5])
 
 
             self.tw_showinfo.setRowCount(len(list_of_transactions))
@@ -85,12 +88,15 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
                 name_tabel = QtWidgets.QTableWidgetItem(str(name[j]))
                 value_tabel = QtWidgets.QTableWidgetItem(str(value[j]))
                 budget_tabel = QtWidgets.QTableWidgetItem(str(budget[j]))
+                type_tabel = QtWidgets.QTableWidgetItem(str(type[j]))
                 date_tabel = QtWidgets.QTableWidgetItem(str(date[j]))
                 self.tw_showinfo.setItem(row, 0, id_tabel)
+                self.tw_showinfo.setItem(row, 2, budget_tabel)
+                self.tw_showinfo.setItem(row, 1, name_tabel)
                 self.tw_showinfo.setItem(row, 3, value_tabel)
-                self.tw_showinfo.setItem(row, 1, budget_tabel)
+                self.tw_showinfo.setItem(row, 5, type_tabel)
                 self.tw_showinfo.setItem(row, 4, date_tabel)
-                self.tw_showinfo.setItem(row, 2, name_tabel)
+                
                 row+=1
 
 

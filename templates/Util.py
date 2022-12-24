@@ -1,5 +1,5 @@
 import sqlite3
-
+import bcrypt
 
 class Utility():
     def __init__(self, AccWindow):
@@ -49,3 +49,30 @@ class Utility():
         #print(result)
         str_result = "".join(map(str, result)).replace("'", "").replace("(", "").replace(")", "").replace(",", " ")
         return str_result
+
+def passwordHashing(password):
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14)).decode('utf-8')
+
+def validateCredentials(password, password_hash):
+        return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
+
+
+
+
+
+
+def exec(LoginForm):
+    db = sqlite3.connect("expense_tracker.db")
+    d = db.cursor()
+    d.execute("""SELECT id from users WHERE username = :username""",
+    {'username': LoginForm.le_username.text()
+    })
+
+    dummy= d.fetchone()
+    idofacc = ""
+    for i in dummy:
+        idofacc +=str(i)
+        
+    LoginForm.idd.append(int(idofacc)) 
+
+    

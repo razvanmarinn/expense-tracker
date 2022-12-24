@@ -19,7 +19,7 @@ class TransactionPopup(QDialog, Ui_PopUpTransactions):
         element = self.Utility.getNameOfTheAccountsOfThisIdTrans(self.AccWindow) # NAMES OF THE ACCOUNTS
         actual_element = self.Utility.splitIntoList(element) # ACTUAL_ELEMENT
         self.cb_accounts.addItems(actual_element)
-        
+        self.cb_typeoftacc.currentText()
 
     def CreateRPopup(self):
         self.hide()
