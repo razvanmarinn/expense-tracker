@@ -2,11 +2,11 @@ from PyQt6.QtWidgets import QApplication, QDialog
 from UI.Accounts import Ui_AccountsForm
 import sqlite3
 from PyQt6 import QtWidgets
-from templates.transactions_popup import TransactionPopup
-from templates.createacc_popup import PopUpWindowAcc
+from templates.popup.TransactionsPopUp import TransactionPopup
+from templates.popup.AccountPopUp import PopUpWindowAcc
 from templates.Buttons import RemoveAccButton
 from templates.Util import Utility
-from templates.analysis import GraphForm
+from templates.Graphs import GraphForm
 
 
 class AccountsFormTab(QDialog, Ui_AccountsForm):

@@ -1,10 +1,9 @@
 from UI.analysis import Ui_Graph
-import matplotlib
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
 import sqlite3
-from PyQt6.QtWidgets import QDialog, QMainWindow
+from PyQt6.QtWidgets import QMainWindow
 
 class MplCanvas(FigureCanvasQTAgg):
 
@@ -40,9 +39,7 @@ class GraphForm(QMainWindow, Ui_Graph):
         print(list_of_transactions)
 
         sc = MplCanvas(self, width=5, height=4, dpi=100)
-        # for i in range(len(list_of_transactions)):
-        #     sc.axes.plot(list_of_transactions[i][0])
-        # self.setCentralWidget(sc)
+
         x=[]
         y=[]
         for i in range(len(list_of_transactions)):

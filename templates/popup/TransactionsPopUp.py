@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QDialog
 from UI.transactions import Ui_PopUpTransactions
 from templates.Buttons import AddTransaction
-from templates.recuring_trans_popup import RecurringForm
+from templates.popup.RTransactionsPopUp import RecurringForm
 from templates.Util import Utility
 
 class TransactionPopup(QDialog, Ui_PopUpTransactions):

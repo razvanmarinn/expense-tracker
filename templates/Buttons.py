@@ -4,6 +4,9 @@ from datetime import datetime
 import time
 import bcrypt
 from templates.Util import passwordHashing, exec
+import schedule
+
+
 salt = bcrypt.gensalt()
 
 class Button(ABC):
@@ -12,6 +15,7 @@ class Button(ABC):
         pass
 
 class AddAccButton(Button):
+    """Add an account to a user"""
     def __init__(self, Accpop):
         self.accpop = Accpop
 
@@ -58,6 +62,7 @@ class AddAccButton(Button):
 
 
 class RemoveAccButton(Button):
+    """Remove an accounts of user"""
     def __init__(self, AccWindow):
         self.AccWindow = AccWindow
 
@@ -78,6 +83,7 @@ class RemoveAccButton(Button):
 
 
 class AddTransaction(Button):
+    """Add an transaction to a specific account of a user"""
     def __init__(self, TransPopup):
         self.TransPopup = TransPopup
 
@@ -111,6 +117,7 @@ class AddTransaction(Button):
             resInt +=str(i)
         resInt = float(resInt)
         sign = self.checkForMinusOrPlus(self.TransPopup.le_value.text())
+        
         if(sign == "-"):
             resInt = resInt - (-1 * float(self.TransPopup.le_value.text()))
             print(resInt)
@@ -134,6 +141,7 @@ class AddTransaction(Button):
 
 
 class LoginButton(Button):
+    """Login into account"""
     def __init__(self, LoginForm):
         self.LoginForm = LoginForm
     def functionality(self):
@@ -149,7 +157,7 @@ class LoginButton(Button):
         temp = d.fetchall()
        
         if (len(temp) == 0):
-            print("TESTETSETSET")
+            self.LoginForm.l_loggedin.setText("Username doesn't exist") 
         else:
             if bcrypt.checkpw(self.LoginForm.le_password.text().encode('utf-8') , bytes(temp[0] , 'utf-8')):
                 self.LoginForm.l_loggedin.setText("Logged in")
@@ -158,7 +166,7 @@ class LoginButton(Button):
                 time.sleep(2)
                 self.LoginForm.switch_to_accounts()
             else:
-                print("Password not ok")
+                self.LoginForm.l_loggedin.setText("Password is not matching") 
             
         db.commit()
     
@@ -167,6 +175,7 @@ class LoginButton(Button):
         
 
 class CreateUserAcc(Button):
+    """Create the user account and encrypt the password using BCRYPT"""
     def __init__(self, LoginForm):
         self.LoginForm = LoginForm
     def functionality(self):
@@ -182,7 +191,7 @@ class CreateUserAcc(Button):
                     'password': hashed_pass
                 }
             )  
-            
+            self.LoginForm.l_loggedin.setText("Account created") 
           
         else:
             self.LoginForm.l_loggedin.setText("username already exists") 
@@ -190,6 +199,7 @@ class CreateUserAcc(Button):
         db.commit()
 
 class AddRecTransaction(Button):
+    """Add a recurring transactions which occurs every n of days."""
     def __init__(self, RecTrPopup):
         self.RecTrPopup = RecTrPopup
 
@@ -263,7 +273,7 @@ class AddRecTransaction(Button):
             } ) 
             
 
-
+            
 
         
        
