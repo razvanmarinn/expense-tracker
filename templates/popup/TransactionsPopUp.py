@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QDialog
 from UI.transactions import Ui_PopUpTransactions
 from templates.Buttons import AddTransaction
 from templates.popup.RTransactionsPopUp import RecurringForm
-from templates.Util import Utility
+from templates.Util import Utility, splitIntoList
 
 class TransactionPopup(QDialog, Ui_PopUpTransactions):
 
@@ -11,13 +11,13 @@ class TransactionPopup(QDialog, Ui_PopUpTransactions):
         self.setupUi(self, AccWindow)
         self.AccWindow = AccWindow
         self.addTransactionButton = AddTransaction(self)
-        self.Utility = Utility(self)
+        self.utility = Utility(self)
         self.show()
         self.pb_addTransactions.clicked.connect(self.addTransactionButton.functionality)
         self.pb_CreateRecurringPopup.clicked.connect(self.CreateRPopup)
 
-        element = self.Utility.getNameOfTheAccountsOfThisIdTrans(self.AccWindow) # NAMES OF THE ACCOUNTS
-        actual_element = self.Utility.splitIntoList(element) # ACTUAL_ELEMENT
+        element = self.utility.get_name_of_acc_transaction(self.AccWindow) # NAMES OF THE ACCOUNTS
+        actual_element = splitIntoList(element) # ACTUAL_ELEMENT
         self.cb_accounts.addItems(actual_element)
         self.cb_typeoftacc.currentText()
 
