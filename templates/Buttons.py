@@ -139,15 +139,14 @@ class LoginButton(Button):
 
         if (len(temp) == 0):
             self.login_form.l_loggedin.setText("Username doesn't exist")
-        else:
-            if bcrypt.checkpw(self.login_form.le_password.text().encode('utf-8') , bytes(temp[0] , 'utf-8')):
-                self.login_form.l_loggedin.setText("Logged in")
-                pass_id_to_acc_tab(self.login_form)
+        elif bcrypt.checkpw(self.login_form.le_password.text().encode('utf-8') , bytes(temp[0] , 'utf-8')):
+            self.login_form.l_loggedin.setText("Logged in")
+            pass_id_to_acc_tab(self.login_form)
 
-                time.sleep(2)
-                self.login_form.switch_to_accounts()
-            else:
-                self.login_form.l_loggedin.setText("Password is not matching")
+            time.sleep(2)
+            self.login_form.switch_to_accounts()
+        else:
+            self.login_form.l_loggedin.setText("Password is not matching")
 
         db.commit()
 

@@ -59,29 +59,26 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         list_of_transactions = []
 
         if temp2 is not None:
-            for i in temp2:
-                list_of_transactions.append(i)
-        id = []
-        name = []
-        value = []
-        budget = []
-        type = []
-        date = []
+            list_of_transactions.extend(iter(temp2))
         if list_of_transactions is not None:
-            for i in range(len(list_of_transactions)):
-                id.append(list_of_transactions[i][0])
-                name.append(list_of_transactions[i][1])
-                value.append(list_of_transactions[i][2])
-                budget.append(list_of_transactions[i][3])
-                type.append(list_of_transactions[i][4])
-                date.append(list_of_transactions[i][5])
+            id = []
+            name = []
+            value = []
+            budget = []
+            type = []
+            date = []
+            for list_of_transaction in list_of_transactions:
+                id.append(list_of_transaction[0])
+                name.append(list_of_transaction[1])
+                value.append(list_of_transaction[2])
+                budget.append(list_of_transaction[3])
+                type.append(list_of_transaction[4])
+                date.append(list_of_transaction[5])
 
 
             self.tw_showinfo.setRowCount(len(list_of_transactions))
 
-            row = 0
-
-            for j in range(len(id)):
+            for row, j in enumerate(range(len(id))):
                 id_tabel = QtWidgets.QTableWidgetItem(str(id[j]))
                 name_tabel = QtWidgets.QTableWidgetItem(str(name[j]))
                 value_tabel = QtWidgets.QTableWidgetItem(str(value[j]))
@@ -94,8 +91,6 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
                 self.tw_showinfo.setItem(row, 3, value_tabel)
                 self.tw_showinfo.setItem(row, 5, type_tabel)
                 self.tw_showinfo.setItem(row, 4, date_tabel)
-
-                row+=1
 
 
     def create_transaction_popup(self):
