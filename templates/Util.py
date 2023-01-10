@@ -23,9 +23,7 @@ class Utility():
         d = db.cursor()
         d.execute("SELECT count(*) FROM accounts_test WHERE userid = :id", {'id': self.AccWindow.current_acc_id})
         count = d.fetchone()
-        noOfAcc = from_list_to_int(count)
-
-        return noOfAcc
+        return from_list_to_int(count)
 
 
     def get_name_of_acc(self):
@@ -37,9 +35,13 @@ class Utility():
 
         })
         result = d.fetchall()
-        #print(result)
-        str_result = "".join(map(str, result)).replace("'", "").replace("(", "").replace(")", "").replace(",", " ")
-        return str_result
+        return (
+            "".join(map(str, result))
+            .replace("'", "")
+            .replace("(", "")
+            .replace(")", "")
+            .replace(",", " ")
+        )
 
 
     def get_name_of_acc_transaction(self, AccWindow):
@@ -51,9 +53,13 @@ class Utility():
 
         })
         result = d.fetchall()
-        #print(result)
-        str_result = "".join(map(str, result)).replace("'", "").replace("(", "").replace(")", "").replace(",", " ")
-        return str_result
+        return (
+            "".join(map(str, result))
+            .replace("'", "")
+            .replace("(", "")
+            .replace(")", "")
+            .replace(",", " ")
+        )
 
 
 
@@ -65,7 +71,9 @@ def validateCredentials(password, password_hash):
 
 def pass_id_to_acc_tab(LoginForm):
 
-    cursor.execute("SELECT id from users WHERE username = '%s'" %(LoginForm.le_username.text()))
+    cursor.execute(
+        f"SELECT id from users WHERE username = '{LoginForm.le_username.text()}'"
+    )
 
     dummy= cursor.fetchone()
 
@@ -79,28 +87,17 @@ def from_list_to_int(string):
         if len(res) > 1:
             break
         res +=str(i)
-    res = int(res)
-    return res
+    return int(res)
 
 
 def from_list_to_float(string):
-    res = ""
-    for i in string:
-        res +=str(i)
-    res = float(res)
-    return res
+    res = "".join(str(i) for i in string)
+    return float(res)
 
 def check_for_minus_or_plus(string):
-    if type(string) == int or type(string) == float:
-        if string > 0:
-            return "+"
-        else:
-            return "-"
-    if string[0] == "-":
-        return "-"
-    return "+"
+    if type(string) in [int, float]:
+        return "+" if string > 0 else "-"
+    return "-" if string[0] == "-" else "+"
 
 def splitIntoList(string): # to be modified
-        split_result = string.split(" ", 3)
-
-        return split_result
+    return string.split(" ", 3)
