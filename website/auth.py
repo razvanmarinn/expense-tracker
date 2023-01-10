@@ -48,21 +48,19 @@ def logout():
 
 @auth.route('/sign-up', methods = ['GET', 'POST'])
 def sign_up():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        email = request.form.get('email')
-        user_model = UserModel()
-        user = user_model.get_user_by_username(username)
-        if user is not None:
-            return render_template('sign_up.html', error='Username already used')
-        else:
-            hashed_pass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14)).decode('utf-8')
-            new_user = User(random.randrange(1,99999), username, hashed_pass)
-            user_model.create_user(new_user)
-            return redirect((url_for('views.home')))
-
-    return render_template('sign_up.html', error='Invalid username or password', user=current_user)
+    if request.method != 'POST':
+        return render_template('sign_up.html', error='Invalid username or password', user=current_user)
+    username = request.form.get('username')
+    password = request.form.get('password')
+    email = request.form.get('email')
+    user_model = UserModel()
+    user = user_model.get_user_by_username(username)
+    if user is not None:
+        return render_template('sign_up.html', error='Username already used')
+    hashed_pass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14)).decode('utf-8')
+    new_user = User(random.randrange(1,99999), username, hashed_pass)
+    user_model.create_user(new_user)
+    return redirect((url_for('views.home')))
 
 
 
