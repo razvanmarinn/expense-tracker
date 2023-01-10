@@ -10,13 +10,13 @@ import sqlite3
 
 class AccountsFormTab(QDialog, Ui_AccountsForm):
     """Accounts form GUI functionality"""
-    def __init__(self, login_form):
+    def __init__(self, login_form, user):
         super().__init__()
-        self.setupUi(self, login_form)
+        self.setupUi(self, login_form, user)
         self.show()
         self.loginf = login_form # LOGIN FORM PASSED TO GET INFO FROM IT
         self.max_accounts_per_user = 3 # STATIC VARIABLE
-        self.current_acc_id = login_form.idd[0] # CURRENT ID OF THE USER
+        self.current_acc_id = user.id # CURRENT USER ID
         self.remove_button = RemoveAccButton(self)
         self.utility = Utility(self)
         self.current_account_id = 0 # CURRENT ACCOUNT ID

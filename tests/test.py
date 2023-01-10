@@ -2,20 +2,18 @@
 import sqlite3
 from templates.Util import from_list_to_int, from_list_to_float, check_for_minus_or_plus, passwordHashing, splitIntoList, validateCredentials
 from datetime import datetime
+from templates.User import User, UserModel
+
+user_model = UserModel()
 
 def test_retreive_user_from_db():
-    db = sqlite3.connect("expense_tracker.db")
-    db.row_factory = lambda cursor, row: row[0]
-    db_cursor = db.cursor()
-    db_cursor.execute(" INSERT INTO users(username, password) VALUES('test_user','test_user'); ")
-    db_cursor.execute("""SELECT username  FROM users WHERE username = "test_user" """)
-
-    result = db_cursor.fetchall()
+    user = User('test_user', 'test_user')
+    user_model.create_user(user)
+    result = user_model.get_user_by_username('test_user')
     assert len(result) > 0
-    assert result == ['test_user']
-    db_cursor.execute("""DELETE FROM users WHERE username = "test_user" """)
-    db.commit()
-    db_cursor.close()
+    assert result[1] and result[2] == 'test_user'
+    user_model.delete_user_by_username('test_user')
+    user_model.close_connection()
 
 def test_add_transaction_with_plus():
 

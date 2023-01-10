@@ -69,17 +69,6 @@ def passwordHashing(password):
 def validateCredentials(password, password_hash):
         return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
 
-def pass_id_to_acc_tab(LoginForm):
-
-    cursor.execute(
-        f"SELECT id from users WHERE username = '{LoginForm.le_username.text()}'"
-    )
-
-    dummy= cursor.fetchone()
-
-
-    LoginForm.idd.append(from_list_to_int(dummy))
-
 
 def from_list_to_int(string):
     res = ""

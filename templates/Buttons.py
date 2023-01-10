@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 import sqlite3
 from datetime import datetime
-import time
 import bcrypt
-from templates.Util import passwordHashing, pass_id_to_acc_tab, from_list_to_int, from_list_to_float, check_for_minus_or_plus
+from templates.Util import from_list_to_int, from_list_to_float, check_for_minus_or_plus
 import psycopg2
 
 #establishing the connection
@@ -129,56 +128,6 @@ class AddTransaction(Button):
         self.TransPopup.hide()
 
 
-class LoginButton(Button):
-    """Login into account"""
-    def __init__(self, login_form):
-        self.login_form = login_form
-    def functionality(self):
-
-
-        cursor.execute(
-            f"SELECT password FROM users WHERE username = '{self.login_form.le_username.text()}'"
-        )
-
-        temp = cursor.fetchall()
-        if (len(temp) == 0):
-            self.login_form.l_loggedin.setText("Username doesn't exist")
-        else:
-            temp2 = "".join(temp[0])
-            if bcrypt.checkpw(self.login_form.le_password.text().encode('utf-8') , bytes(temp2 , 'utf-8')):
-                self.login_form.l_loggedin.setText("Logged in")
-                pass_id_to_acc_tab(self.login_form)
-
-                time.sleep(2)
-                self.login_form.switch_to_accounts()
-            else:
-                self.login_form.l_loggedin.setText("Password is not matching")
-
-        conn.commit()
-
-class CreateUserAcc(Button):
-    """Create the user account and encrypt the password using BCRYPT"""
-    def __init__(self, login_form):
-        self.login_form = login_form
-    def functionality(self):
-        cursor.execute(
-            f"SELECT username from users WHERE username = '{self.login_form.le_username.text()}';"
-        )
-
-        result = cursor.fetchone()
-        if result is None:
-            hashed_pass = passwordHashing(self.login_form.le_password.text())
-            print(hashed_pass)
-            cursor.execute(
-                f"INSERT INTO users (username, password )VALUES ('{self.login_form.le_username.text()}', '{hashed_pass}');"
-            )
-
-            self.login_form.l_loggedin.setText("Account created")
-
-        else:
-            self.login_form.l_loggedin.setText("username already exists")
-
-        conn.commit()
 
 class AddRecTransaction(Button):
     """Add a recurring transactions which occurs every n of days."""
