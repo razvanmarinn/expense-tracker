@@ -1,17 +1,24 @@
-import sqlite3
+import psycopg2
 
-db = sqlite3.connect("expense_tracker.db")
-d = db.cursor()
+#establishing the connection
+conn = psycopg2.connect(
+   database="expense-tracker", user='postgres', password='raz', host='127.0.0.1', port= '5432'
+)
+conn.autocommit = True
 
+cursor = conn.cursor()
+
+def set_pragma():
+    cursor.execute("""PRAGMA encoding="UTF-8";""")
 def create_table_users():
-    d.execute("""CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL, password TEXT NOT NULL)""")
+    cursor.execute("""CREATE TABLE users (ID  SERIAL PRIMARY KEY,username TEXT NOT NULL, password bytea NOT NULL)""")
 
 def add_Values():
-    d.execute("""INSERT INTO users(username, password) VALUES('asd','asd');""")
-    db.commit()
+    cursor.execute("INSERT INTO users(username, password) VALUES('asd','asd');")()
 def create_table_accounts():
-    d.execute("""CREATE TABLE accounts_test (accounts_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , balance REAL,userid INTEGER, FOREIGN KEY(userid) REFERENCES users(id))""")
+    cursor.execute("CREATE TABLE accounts_test (accounts_id SERIAL PRIMARY KEY, name TEXT , balance INT ,userid INT, CONSTRAINT fk_user FOREIGN KEY(userid) REFERENCES users(id))")
 def create_transaction_table():
-    d.execute("""CREATE TABLE transactions (transaction_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT , balance REAL, value REAL,date TEXT, account_id INTEGER, FOREIGN KEY(account_id) REFERENCES accounts_test(accounts_id))""")
+    cursor.execute("CREATE TABLE transactions (transaction_id SERIAL PRIMARY KEY, name TEXT , balance INT, value float ,date TEXT, type_of TEXT , account_id INT,CONSTRAINT fk_account FOREIGN KEY(account_id) REFERENCES accounts_test(accounts_id))")
 
 create_transaction_table()
+

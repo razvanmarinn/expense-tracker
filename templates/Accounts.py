@@ -102,8 +102,10 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         """Create transaction popup"""
         if self.actual_element[0] == "":
             print("No accounts on this user")
-        transaction = TransactionPopup(self)
-        transaction.show()
+        else:
+            transaction = TransactionPopup(self)
+            transaction.show()
+
 
 
     def create_popup(self):

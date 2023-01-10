@@ -1,5 +1,16 @@
 import sqlite3
 import bcrypt
+import psycopg2
+
+
+conn = psycopg2.connect(
+   database="expense-tracker", user='postgres', password='raz', host='127.0.0.1', port= '5432'
+)
+conn.autocommit = True
+
+cursor = conn.cursor()
+
+
 
 class Utility():
     def __init__(self, AccWindow):
@@ -53,13 +64,10 @@ def validateCredentials(password, password_hash):
         return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
 
 def pass_id_to_acc_tab(LoginForm):
-    db = sqlite3.connect("expense_tracker.db")
-    db_cursor = db.cursor()
-    db_cursor.execute("""SELECT id from users WHERE username = :username""",
-    {'username': LoginForm.le_username.text()
-    })
 
-    dummy= db_cursor.fetchone()
+    cursor.execute("SELECT id from users WHERE username = '%s'" %(LoginForm.le_username.text()))
+
+    dummy= cursor.fetchone()
 
 
     LoginForm.idd.append(from_list_to_int(dummy))

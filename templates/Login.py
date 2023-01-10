@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow, QDialog 
+from PyQt6.QtWidgets import QMainWindow, QDialog
 from UI.Login import Ui_LoginForm
 from templates.Accounts import AccountsFormTab
 from templates.Buttons import LoginButton, CreateUserAcc

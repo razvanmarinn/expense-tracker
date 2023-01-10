@@ -4,6 +4,14 @@ from datetime import datetime
 import time
 import bcrypt
 from templates.Util import passwordHashing, pass_id_to_acc_tab, from_list_to_int, from_list_to_float, check_for_minus_or_plus
+import psycopg2
+
+#establishing the connection
+conn = psycopg2.connect(
+   database="expense-tracker", user='postgres', password='raz', host='127.0.0.1', port= '5432'
+)
+cursor = conn.cursor()
+conn.autocommit = True
 
 
 salt = bcrypt.gensalt()
@@ -126,21 +134,16 @@ class LoginButton(Button):
     def __init__(self, login_form):
         self.login_form = login_form
     def functionality(self):
-        db = sqlite3.connect("expense_tracker.db")
-        db.row_factory = lambda cursor, row: row[0]
-        db_cursor = db.cursor()
 
 
-        db_cursor.execute("""SELECT password FROM users WHERE username =:username """,
-            {
-            'username' : self.login_form.le_username.text(),
-            })
-        temp = db_cursor.fetchall()
+        cursor.execute("SELECT password FROM users WHERE username = '%s'" %(self.login_form.le_username.text()))
 
+        temp = cursor.fetchall()
         if (len(temp) == 0):
             self.login_form.l_loggedin.setText("Username doesn't exist")
         else:
-            if bcrypt.checkpw(self.login_form.le_password.text().encode('utf-8') , bytes(temp[0] , 'utf-8')):
+            temp2 = "".join(temp[0])
+            if bcrypt.checkpw(self.login_form.le_password.text().encode('utf-8') , bytes(temp2 , 'utf-8')):
                 self.login_form.l_loggedin.setText("Logged in")
                 pass_id_to_acc_tab(self.login_form)
 
@@ -149,32 +152,27 @@ class LoginButton(Button):
             else:
                 self.login_form.l_loggedin.setText("Password is not matching")
 
-        db.commit()
+        conn.commit()
 
 class CreateUserAcc(Button):
     """Create the user account and encrypt the password using BCRYPT"""
     def __init__(self, login_form):
         self.login_form = login_form
     def functionality(self):
-        db = sqlite3.connect("expense_tracker.db")
-        db_cursor = db.cursor()
-        db_cursor.execute("SELECT username from users WHERE username = :username",
-        {'username': self.login_form.le_username.text()})
-        result = db_cursor.fetchone()
+        cursor.execute("SELECT username from users WHERE username = '%s';" %(self.login_form.le_username.text()))
+
+        result = cursor.fetchone()
         if result is None:
             hashed_pass = passwordHashing(self.login_form.le_password.text())
-            db_cursor.execute("INSERT INTO users (username, password )VALUES (:username, :password)",
-                {
-                    'username': self.login_form.le_username.text(),
-                    'password': hashed_pass
-                }
-            )
+            print(hashed_pass)
+            cursor.execute("INSERT INTO users (username, password )VALUES ('%s', '%s');" %(self.login_form.le_username.text(), hashed_pass))
+
             self.login_form.l_loggedin.setText("Account created")
 
         else:
             self.login_form.l_loggedin.setText("username already exists")
 
-        db.commit()
+        conn.commit()
 
 class AddRecTransaction(Button):
     """Add a recurring transactions which occurs every n of days."""
