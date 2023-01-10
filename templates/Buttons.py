@@ -136,7 +136,9 @@ class LoginButton(Button):
     def functionality(self):
 
 
-        cursor.execute("SELECT password FROM users WHERE username = '%s'" %(self.login_form.le_username.text()))
+        cursor.execute(
+            f"SELECT password FROM users WHERE username = '{self.login_form.le_username.text()}'"
+        )
 
         temp = cursor.fetchall()
         if (len(temp) == 0):
@@ -159,13 +161,17 @@ class CreateUserAcc(Button):
     def __init__(self, login_form):
         self.login_form = login_form
     def functionality(self):
-        cursor.execute("SELECT username from users WHERE username = '%s';" %(self.login_form.le_username.text()))
+        cursor.execute(
+            f"SELECT username from users WHERE username = '{self.login_form.le_username.text()}';"
+        )
 
         result = cursor.fetchone()
         if result is None:
             hashed_pass = passwordHashing(self.login_form.le_password.text())
             print(hashed_pass)
-            cursor.execute("INSERT INTO users (username, password )VALUES ('%s', '%s');" %(self.login_form.le_username.text(), hashed_pass))
+            cursor.execute(
+                f"INSERT INTO users (username, password )VALUES ('{self.login_form.le_username.text()}', '{hashed_pass}');"
+            )
 
             self.login_form.l_loggedin.setText("Account created")
 

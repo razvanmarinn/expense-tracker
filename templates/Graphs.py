@@ -31,17 +31,14 @@ class GraphForm(QMainWindow, Ui_Graph):
         list_of_transactions = []
 
         if temp2 is not None:
-            for i in temp2:
-                list_of_transactions.append(i)
-
-
+            list_of_transactions.extend(iter(temp2))
         mpl_canvas = MplCanvas(self, width=5, height=4, dpi=100)
 
         x_axis=[]
         y_axis=[]
-        for i in range(len(list_of_transactions)):
-            x_axis.append(list_of_transactions[i][0])
-            y_axis.append(list_of_transactions[i][3])
+        for list_of_transaction in list_of_transactions:
+            x_axis.append(list_of_transaction[0])
+            y_axis.append(list_of_transaction[3])
         mpl_canvas.axes.plot(x_axis,y_axis)
 
         self.setCentralWidget(mpl_canvas)
