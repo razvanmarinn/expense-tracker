@@ -45,24 +45,26 @@ class UserModel:
 
     def create_user(self, user):
         c = self.conn.cursor()
-        c.execute("INSERT INTO users (username, password) VALUES ('%s', '%s');" % (user.username, user.password))
+        c.execute(
+            f"INSERT INTO users (username, password) VALUES ('{user.username}', '{user.password}');"
+        )
         self.conn.commit()
         return c.lastrowid
 
     def get_user(self, user_id):
         c = self.conn.cursor()
-        c.execute("SELECT * FROM users WHERE id=%s"%(user_id))
+        c.execute(f"SELECT * FROM users WHERE id={user_id}")
         return c.fetchone()
 
     def get_user_by_username(self, username):
         c = self.conn.cursor()
-        c.execute("SELECT * FROM users WHERE username='%s'"%(username))
+        c.execute(f"SELECT * FROM users WHERE username='{username}'")
         return c.fetchone()
 
 
     def delete_user_by_username(self, username):
         c = self.conn.cursor()
-        c.execute("DELETE FROM users WHERE username='%s'"%(username))
+        c.execute(f"DELETE FROM users WHERE username='{username}'")
         self.conn.commit()
 
     def close_connection(self):
