@@ -3,8 +3,8 @@ from PyQt6 import QtWidgets
 from UI.Accounts import Ui_AccountsForm
 from templates.popup.TransactionsPopUp import TransactionPopup
 from templates.popup.AccountPopUp import PopUpWindowAcc
-from templates.Buttons import RemoveAccButton
 from templates.Util import Utility, splitIntoList
+from templates.Models import AccountModel, TransactionModel
 from templates.Graphs import GraphForm
 import sqlite3
 
@@ -14,22 +14,25 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         super().__init__()
         self.setupUi(self, login_form, user)
         self.show()
+        self.user =user
         self.loginf = login_form # LOGIN FORM PASSED TO GET INFO FROM IT
         self.max_accounts_per_user = 3 # STATIC VARIABLE
-        self.current_acc_id = user.id # CURRENT USER ID
-        self.remove_button = RemoveAccButton(self)
-        self.utility = Utility(self)
+        self.current_user_id = user.id # CURRENT USER ID
         self.current_account_id = 0 # CURRENT ACCOUNT ID
 
+        self.account_model = AccountModel()
+        self.transaction_model = TransactionModel()
 
-        self.current_nr_of_acc = self.utility.countCurrentNrOfAcs()
+        self.current_nr_of_acc = self.account_model.count_accounts(user.id) # CURRENT NUMBER OF ACCOUNTS
         #add items to dropdown box
-        element = self.utility.get_name_of_acc() # NAMES OF THE ACCOUNTS
+
+        element = self.account_model.get_name_of_acc(user.id) # NAMES OF THE ACCOUNTS
         self.actual_element = splitIntoList(element) # ACTUAL_ELEMENT
-        self.cb_dropdown.addItems(self.actual_element)
+        if self.actual_element is not None:
+            self.cb_dropdown.addItems(self.actual_element)
 
         self.pb_addacc.clicked.connect(self.create_popup)
-        self.pb_removeacc.clicked.connect(self.remove_button.functionality)
+        self.pb_removeacc.clicked.connect(self.remove_account)
         self.pb_logout.clicked.connect(self.logout)
         self.pb_analyze.clicked.connect(self.create_graph_popup)
         self.pb_addtransaction.clicked.connect(self.create_transaction_popup)
@@ -39,27 +42,19 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
 
     def set_data(self):
         """Set data from database into accounts display table"""
-        db = sqlite3.connect("expense_tracker.db")
-        db_cursor= db.cursor()
+
         curr_text = self.cb_dropdown.currentText() # CURRENT DROPDOWN TEXT
+        accid = self.account_model.get_account_id(curr_text, self.current_user_id)
 
-        db_cursor.execute("SELECT accounts_id from accounts_test WHERE name = :name AND userid = :userid",
-        {'name': curr_text , 'userid': self.current_acc_id})
-        temp = db_cursor.fetchone()
-        accid = ""
-        if temp is not None:
-            for i in temp:
-                accid +=str(i)
-
-            accid = int(accid)
         self.current_account_id = accid
-        db_cursor.execute("SELECT * from transactions WHERE account_id = :accid" , {'accid': accid})
-        temp2 = db_cursor.fetchall()
+
+        temp2 = self.transaction_model.get_transaction_by_acc_id(accid)
 
         list_of_transactions = []
 
         if temp2 is not None:
             list_of_transactions.extend(iter(temp2))
+
         if list_of_transactions is not None:
             id = []
             name = []
@@ -123,4 +118,17 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
     def create_new(self):
         """Create a new instance of this class"""
         self.hide()
-        self.__init__(self.loginf)
+        self.__init__(self.loginf, self.user)
+
+
+
+
+    def remove_account(self):
+        if self.actual_element[0] == "":
+            print("No accounts to be removed")
+        else:
+            self.transaction_model.delete_transaction_by_acc_id(self.current_account_id)
+            self.account_model.delete_account(self.cb_dropdown.currentText(), self.current_user_id)
+            self.cb_dropdown.removeItem(self.cb_dropdown.currentIndex())
+            # self.create_new()
+

@@ -10,7 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_AccountsForm(object):
-    def setupUi(self, AccountsForm, LoginForm):
+    def setupUi(self, AccountsForm, LoginForm, user):
         AccountsForm.setObjectName("AccountsForm")
         AccountsForm.setEnabled(True)
         AccountsForm.resize(927, 471)

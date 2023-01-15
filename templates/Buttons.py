@@ -20,68 +20,6 @@ class Button(ABC):
     def functionality(self):
         pass
 
-class AddAccButton(Button):
-    """Add an account to a user"""
-    def __init__(self, Accpop):
-        self.accpop = Accpop
-
-    def functionality(self):
-        db = sqlite3.connect("expense_tracker.db")
-        db_cursor = db.cursor()
-        db_cursor.execute("SELECT count(*) FROM accounts_test WHERE userid = :id", {'id': self.accpop.accwindow.current_acc_id})
-        result = db_cursor.fetchone()
-        no_of_acc = from_list_to_int(result)
-        if no_of_acc >= self.accpop.accwindow.max_accounts_per_user:
-            print("max accs")
-        else:
-            db_cursor.execute("INSERT INTO accounts_test (name,balance,userid) VALUES (:name,:balance,:id)",
-            {'name' : self.accpop.le_accountname.text(),
-            'balance': int(self.accpop.le_budgetname.text()),
-            'id': self.accpop.accwindow.current_acc_id
-            } )
-            db_cursor.execute("SELECT accounts_id FROM accounts_test WHERE name = :name",
-            {'name': self.accpop.le_accountname.text()
-            })
-            account_id = db_cursor.fetchone()
-            account_id_int = from_list_to_int(account_id)
-
-            curdate = datetime.now()
-            dt_string = curdate.strftime("%d/%m/%Y")
-
-            db_cursor.execute("INSERT INTO transactions (name, balance, value, account_id, date) VALUES (:name,:balance, :value ,:id , :date)",
-            { 'name' : "init",
-            'balance': int(self.accpop.le_budgetname.text()),
-            'value': int(self.accpop.le_budgetname.text()),
-            'id': account_id_int,
-            'date': dt_string
-            } )
-
-            self.accpop.accwindow.cb_dropdown.addItem(self.accpop.le_accountname.text())
-            db.commit()
-            self.accpop.accwindow.create_new()
-            self.accpop.hide()
-
-
-class RemoveAccButton(Button):
-    """Remove an accounts of user"""
-    def __init__(self, AccWindow):
-        self.AccWindow = AccWindow
-
-    def functionality(self):
-        db = sqlite3.connect("expense_tracker.db")
-        db_cursor = db.cursor()
-        if self.AccWindow.actual_element[0] == "":
-            print("No accounts to be removed")
-        else:
-            db_cursor.execute("DELETE FROM accounts_test WHERE name =:name", {'name': self.AccWindow.cb_dropdown.currentText()})
-            print(self.AccWindow.current_account_id)
-            db_cursor.execute("DELETE FROM transactions WHERE account_id = :account_id", {'account_id': self.AccWindow.current_account_id})
-            # currentTextChanged signal will pass selected text to slot
-            curr_index = self.AccWindow.cb_dropdown.currentIndex()
-            self.AccWindow.cb_dropdown.removeItem(curr_index)  # remove item from index
-            db.commit()
-            self.AccWindow.create_new()
-
 
 class AddTransaction(Button):
     """Add an transaction to a specific account of a user"""
@@ -128,6 +66,29 @@ class AddTransaction(Button):
         self.TransPopup.hide()
 
 
+        end_date = self.RecTrPopup.de_enddate.date()
+        actual_end_date = end_date.toPyDate()
+        curdate = datetime.now()
+        dt_string = curdate.strftime("%d/%m/%Y")
+
+
+        while dt_string != actual_end_date:
+            db_cursor.execute("INSERT INTO transactions (name, balance, value, date, account_id )VALUES (:name, :balance, :value, :date , :account_id)",
+            {
+                'name': self.RecTrPopup.le_name.text(),
+                'value': self.RecTrPopup.le_value.text(),
+                'balance': res_int,
+                'account_id': account_id_int,
+                'type_of':self.RecTrPopup.cb_accounts.currentText(),
+                'date': curdate
+            } )
+
+        db_cursor.execute("UPDATE accounts_test SET balance = :new_budget WHERE accounts_id = :accid", {'accid': account_id_int, 'new_budget': res_int})
+
+        db.commit()
+        self.RecTrPopup.AccWindow.create_new()
+        self.RecTrPopup.hide()
+
 
 class AddRecTransaction(Button):
     """Add a recurring transactions which occurs every n of days."""
@@ -165,29 +126,3 @@ class AddRecTransaction(Button):
             'account_id': account_id_int,
             'date': actual_start_date
         } )
-
-
-
-
-        end_date = self.RecTrPopup.de_enddate.date()
-        actual_end_date = end_date.toPyDate()
-        curdate = datetime.now()
-        dt_string = curdate.strftime("%d/%m/%Y")
-
-
-        while dt_string != actual_end_date:
-            db_cursor.execute("INSERT INTO transactions (name, balance, value, date, account_id )VALUES (:name, :balance, :value, :date , :account_id)",
-            {
-                'name': self.RecTrPopup.le_name.text(),
-                'value': self.RecTrPopup.le_value.text(),
-                'balance': res_int,
-                'account_id': account_id_int,
-                'type_of':self.RecTrPopup.cb_accounts.currentText(),
-                'date': curdate
-            } )
-
-        db_cursor.execute("UPDATE accounts_test SET balance = :new_budget WHERE accounts_id = :accid", {'accid': account_id_int, 'new_budget': res_int})
-
-        db.commit()
-        self.RecTrPopup.AccWindow.create_new()
-        self.RecTrPopup.hide()

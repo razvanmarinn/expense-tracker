@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QMainWindow, QDialog
 from UI.Login import Ui_LoginForm
 from templates.Accounts import AccountsFormTab
-from templates.User import UserModel, User
+from templates.Models import UserModel, User
 from templates.Util import passwordHashing
 import time
 import bcrypt
@@ -56,10 +56,12 @@ class LoginFormWindow(QDialog, Ui_LoginForm):
         else:
             self.l_loggedin.setText("username already exists")
 
+            
+
     def switch_to_accounts(self, user):
         """Switch to accounts tab"""
         self.window= QMainWindow()
-        self.ui_accounts = AccountsFormTab(LoginFormWindow, user)    #creating an object
+        self.ui_accounts = AccountsFormTab(LoginFormWindow, user)  # Pass the login window to the accounts tab
         self.hide()
 
 
