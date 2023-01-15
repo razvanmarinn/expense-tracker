@@ -16,9 +16,10 @@ def create_table_users():
 def add_Values():
     cursor.execute("INSERT INTO users(username, password) VALUES('asd','asd');")()
 def create_table_accounts():
-    cursor.execute("CREATE TABLE accounts_test (accounts_id SERIAL PRIMARY KEY, name TEXT , balance INT ,userid INT, CONSTRAINT fk_user FOREIGN KEY(userid) REFERENCES users(id))")
+    cursor.execute("CREATE TABLE accounts_test (accounts_id SERIAL PRIMARY KEY, name TEXT , balance INT ,iban character varying(34) NOT NULL, userid INT, CONSTRAINT fk_user FOREIGN KEY(userid) REFERENCES users(id))")
 def create_transaction_table():
-    cursor.execute("CREATE TABLE transactions (transaction_id SERIAL PRIMARY KEY, name TEXT , balance INT, value float ,date TEXT, type_of TEXT , account_id INT,CONSTRAINT fk_account FOREIGN KEY(account_id) REFERENCES accounts_test(accounts_id))")
-
+    cursor.execute("CREATE TABLE transactions (transaction_id SERIAL PRIMARY KEY, name TEXT , value float ,date date, type_of TEXT , account_id INT,CONSTRAINT fk_account FOREIGN KEY(account_id) REFERENCES accounts_test(accounts_id))")
+def create_transfers_table():
+    cursor.execute("CREATE TABLE transfers (transfer_id SERIAL PRIMARY KEY , sender_acc_id INT, receiver_iban character varying(34) NOT NULL, value INT, description TEXT)")
 create_transaction_table()
 

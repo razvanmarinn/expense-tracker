@@ -62,8 +62,15 @@ def from_list_to_int(string):
             break
         res +=str(i)
     return int(res)
-
-
+def from_list_to_str(string):
+    if string is None:
+        return None
+    res = ""
+    for i in string:
+        if len(res) > 1:
+            break
+        res +=str(i)
+    return res
 def from_list_to_float(string):
     res = "".join(str(i) for i in string)
     return float(res)

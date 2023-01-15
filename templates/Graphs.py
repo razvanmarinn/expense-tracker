@@ -2,7 +2,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from PyQt6.QtWidgets import QMainWindow
 from UI.analysis import Ui_Graph
-import sqlite3 ; """Sqlite module"""
+from templates.Models import TransactionModel
 
 class MplCanvas(FigureCanvasQTAgg):
     """Mpl canvas class"""
@@ -16,18 +16,15 @@ class GraphForm(QMainWindow, Ui_Graph):
     def __init__(self, acc_window):
         super().__init__(acc_window)
         self.acc_window = acc_window
+        self.transaction_model = TransactionModel()
         self.setupUi(self, acc_window)
         self.make_graph()
         self.show()
 
 
     def make_graph(self):
-        db = sqlite3.connect("expense_tracker.db")
-        db_cursor = db.cursor()
 
-        db_cursor.execute("SELECT * from transactions WHERE account_id = :accid" , {'accid': self.acc_window.current_account_id})
-        temp2 = db_cursor.fetchall()
-
+        temp2 = self.transaction_model.get_transaction_by_acc_id(self.acc_window.current_account_id)
         list_of_transactions = []
 
         if temp2 is not None:

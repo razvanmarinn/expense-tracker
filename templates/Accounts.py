@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QApplication, QDialog
 from PyQt6 import QtWidgets
 from UI.Accounts import Ui_AccountsForm
 from templates.popup.TransactionsPopUp import TransactionPopup
+from templates.popup.transferpopup import TransferPopup
 from templates.popup.AccountPopUp import PopUpWindowAcc
 from templates.Util import Utility, splitIntoList
 from templates.Models import AccountModel, TransactionModel
@@ -36,8 +37,12 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         self.pb_logout.clicked.connect(self.logout)
         self.pb_analyze.clicked.connect(self.create_graph_popup)
         self.pb_addtransaction.clicked.connect(self.create_transaction_popup)
+        self.pb_createtransfer.clicked.connect(self.create_transfer_popup)
+
         self.set_data() # SET DATA IN THE TABLE
         self.cb_dropdown.currentIndexChanged.connect(self.set_data)
+
+
 
 
     def set_data(self):
@@ -47,7 +52,9 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         accid = self.account_model.get_account_id(curr_text, self.current_user_id)
 
         self.current_account_id = accid
-
+        if accid is None:
+            return 0
+        self.l_balance_value.setText(str(self.account_model.get_account_balance(accid)))
         temp2 = self.transaction_model.get_transaction_by_acc_id(accid)
 
         list_of_transactions = []
@@ -59,16 +66,14 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
             id = []
             name = []
             value = []
-            budget = []
             type = []
             date = []
             for list_of_transaction in list_of_transactions:
                 id.append(list_of_transaction[0])
                 name.append(list_of_transaction[1])
                 value.append(list_of_transaction[2])
-                budget.append(list_of_transaction[3])
-                type.append(list_of_transaction[4])
-                date.append(list_of_transaction[5])
+                type.append(list_of_transaction[3])
+                date.append(list_of_transaction[4])
 
 
             self.tw_showinfo.setRowCount(len(list_of_transactions))
@@ -77,15 +82,14 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
                 id_tabel = QtWidgets.QTableWidgetItem(str(id[j]))
                 name_tabel = QtWidgets.QTableWidgetItem(str(name[j]))
                 value_tabel = QtWidgets.QTableWidgetItem(str(value[j]))
-                budget_tabel = QtWidgets.QTableWidgetItem(str(budget[j]))
                 type_tabel = QtWidgets.QTableWidgetItem(str(type[j]))
                 date_tabel = QtWidgets.QTableWidgetItem(str(date[j]))
                 self.tw_showinfo.setItem(row, 0, id_tabel)
-                self.tw_showinfo.setItem(row, 2, budget_tabel)
                 self.tw_showinfo.setItem(row, 1, name_tabel)
-                self.tw_showinfo.setItem(row, 3, value_tabel)
-                self.tw_showinfo.setItem(row, 5, type_tabel)
-                self.tw_showinfo.setItem(row, 4, date_tabel)
+                self.tw_showinfo.setItem(row, 2, value_tabel)
+                self.tw_showinfo.setItem(row, 3, date_tabel)
+                self.tw_showinfo.setItem(row, 4, type_tabel)
+
 
 
     def create_transaction_popup(self):
@@ -103,6 +107,10 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         pop = PopUpWindowAcc(self)
         pop.show()
 
+    def create_transfer_popup(self):
+        """Create popup window form"""
+        pop = TransferPopup(self)
+        pop.show()
 
     def create_graph_popup(self):
         """Create graph popup"""

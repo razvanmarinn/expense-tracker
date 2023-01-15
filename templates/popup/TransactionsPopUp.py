@@ -18,7 +18,7 @@ class TransactionPopup(QDialog, Ui_PopUpTransactions):
 
         self.show()
         self.pb_addTransactions.clicked.connect(self.create_transaction)
-        self.pb_CreateRecurringPopup.clicked.connect(self.CreateRPopup)
+        # self.pb_CreateRecurringPopup.clicked.connect(self.CreateRPopup)
 
         element = self.account_model.get_name_of_acc(self.AccWindow.current_user_id) # NAMES OF THE ACCOUNTS
         actual_element = splitIntoList(element) # ACTUAL_ELEMENT
@@ -43,9 +43,9 @@ class TransactionPopup(QDialog, Ui_PopUpTransactions):
     def create_transaction(self):
         account_id = self.account_model.get_account_id(self.cb_accounts.currentText(), self.AccWindow.current_user_id)
 
-
-        dt_string = datetime.now().strftime("%d/%m/%Y")
-
+        time = datetime.now()
+        dt_string = time.strftime("%d/%m/%Y")
+        print(dt_string)
 
 
         acc_balance = self.account_model.get_account_balance(account_id)

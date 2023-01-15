@@ -2,11 +2,12 @@
 import sqlite3
 from templates.Util import from_list_to_int, from_list_to_float, check_for_minus_or_plus, passwordHashing, splitIntoList, validateCredentials
 from datetime import datetime
-from templates.Models import User, UserModel, Transaction, TransactionModel, Account, AccountModel
+from templates.Models import User, UserModel, Transaction, TransactionModel, Account, AccountModel, TransferModel, Transfer
 
 user_model = UserModel()
 transaction_model = TransactionModel()
 account_model = AccountModel()
+transfer_model = TransferModel()
 
 
 
@@ -123,4 +124,34 @@ def test_create_and_count_accounts():
 
 
 
+
+
+
+
+def test_transfer_between_users():
+    try:
+        value = 250
+        user_model.create_user(User('sender', 'test'))
+        acc = Account('sender_acc', 500, user_model.get_user_id_by_username("sender"))
+        account_model.create_account(acc)
+        user_model.create_user(User('receiver', 'test'))
+        acc2 = Account('receive', 0 , user_model.get_user_id_by_username("receiver"))
+        account_model.create_account(acc2)
+        acc_id_receiver = account_model.get_account_id('receive',user_model.get_user_id_by_username("receiver") )
+        acc_id_sender = account_model.get_account_id('sender_acc', user_model.get_user_id_by_username("sender"))
+
+        iban = account_model.get_iban(acc_id_receiver)
+
+        new_transfer = Transfer(acc_id_sender, iban, value, "TEST")
+        transfer_model.create_transfer(new_transfer)
+        assert account_model.get_account_balance(acc_id_sender) == 250
+        assert account_model.get_account_balance(acc_id_receiver) == 250
+
+    finally:
+        transaction_model.delete_transaction_by_acc_id(user_model.get_user_id_by_username("sender"))
+        transaction_model.delete_transaction_by_acc_id(user_model.get_user_id_by_username("receiver"))
+        account_model.delete_account('sender_acc', user_model.get_user_id_by_username("sender"))
+        account_model.delete_account('receive', user_model.get_user_id_by_username("receiver"))
+        user_model.delete_user_by_username('sender')
+        user_model.delete_user_by_username('receiver')
 
