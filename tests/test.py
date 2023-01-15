@@ -148,8 +148,11 @@ def test_transfer_between_users():
         assert account_model.get_account_balance(acc_id_receiver) == 250
 
     finally:
-        transaction_model.delete_transaction_by_acc_id(user_model.get_user_id_by_username("sender"))
-        transaction_model.delete_transaction_by_acc_id(user_model.get_user_id_by_username("receiver"))
+
+        transaction_model.delete_transaction_by_acc_id(account_model.get_account_id('sender_acc', user_model.get_user_id_by_username("sender")))
+        transaction_model.delete_transaction_by_acc_id(account_model.get_account_id('receive' , user_model.get_user_id_by_username("receiver")))
+
+
         account_model.delete_account('sender_acc', user_model.get_user_id_by_username("sender"))
         account_model.delete_account('receive', user_model.get_user_id_by_username("receiver"))
         user_model.delete_user_by_username('sender')
