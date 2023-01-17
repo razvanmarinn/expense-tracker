@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication
 import sys
-from templates.Login import LoginFormWindow
+from src.m_Login import LoginFormWindow
 
 
 

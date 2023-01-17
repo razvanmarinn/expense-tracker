@@ -155,26 +155,6 @@ color:#fff</string>
       <property name="styleSheet">
        <string notr="true">background-color:#228be6;</string>
       </property>
-      <item>
-       <property name="text">
-        <string>Food</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Shopping</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Services</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Traveling</string>
-       </property>
-      </item>
      </widget>
     </item>
    </layout>
@@ -196,6 +176,28 @@ color:#fff</string>
    </property>
    <property name="text">
     <string>Type of transaction</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_add_type_of_category">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>120</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#228be6;
+color: #fff</string>
+   </property>
+   <property name="text">
+    <string>+</string>
    </property>
   </widget>
  </widget>

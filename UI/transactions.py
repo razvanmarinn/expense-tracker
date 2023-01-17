@@ -10,7 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_PopUpTransactions(object):
-    def setupUi(self, PopUpTransactions, AccWindow):
+    def setupUi(self, PopUpTransactions,AccWindow):
         PopUpTransactions.setObjectName("PopUpTransactions")
         PopUpTransactions.resize(496, 285)
         PopUpTransactions.setStyleSheet("background-color:rgb(92, 90, 94);\n"
@@ -74,10 +74,6 @@ class Ui_PopUpTransactions(object):
         self.cb_typeoftacc = QtWidgets.QComboBox(self.layoutWidget)
         self.cb_typeoftacc.setStyleSheet("background-color:#228be6;")
         self.cb_typeoftacc.setObjectName("cb_typeoftacc")
-        self.cb_typeoftacc.addItem("")
-        self.cb_typeoftacc.addItem("")
-        self.cb_typeoftacc.addItem("")
-        self.cb_typeoftacc.addItem("")
         self.verticalLayout.addWidget(self.cb_typeoftacc)
         self.label_3 = QtWidgets.QLabel(PopUpTransactions)
         self.label_3.setGeometry(QtCore.QRect(20, 120, 201, 20))
@@ -86,6 +82,14 @@ class Ui_PopUpTransactions(object):
         font.setPointSize(10)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
+        self.pb_add_type_of_category = QtWidgets.QPushButton(PopUpTransactions)
+        self.pb_add_type_of_category.setGeometry(QtCore.QRect(430, 120, 51, 20))
+        font = QtGui.QFont()
+        font.setFamily("OCR A Extended")
+        self.pb_add_type_of_category.setFont(font)
+        self.pb_add_type_of_category.setStyleSheet("background-color:#228be6;\n"
+"color: #fff")
+        self.pb_add_type_of_category.setObjectName("pb_add_type_of_category")
 
         self.retranslateUi(PopUpTransactions)
         QtCore.QMetaObject.connectSlotsByName(PopUpTransactions)
@@ -98,11 +102,8 @@ class Ui_PopUpTransactions(object):
         self.pb_addTransactions.setText(_translate("PopUpTransactions", "Add"))
         self.label.setText(_translate("PopUpTransactions", "Account"))
         self.pb_CreateRecurringPopup.setText(_translate("PopUpTransactions", "Add a recurring transaction"))
-        self.cb_typeoftacc.setItemText(0, _translate("PopUpTransactions", "Food"))
-        self.cb_typeoftacc.setItemText(1, _translate("PopUpTransactions", "Shopping"))
-        self.cb_typeoftacc.setItemText(2, _translate("PopUpTransactions", "Services"))
-        self.cb_typeoftacc.setItemText(3, _translate("PopUpTransactions", "Traveling"))
         self.label_3.setText(_translate("PopUpTransactions", "Type of transaction"))
+        self.pb_add_type_of_category.setText(_translate("PopUpTransactions", "+"))
 
 
 if __name__ == "__main__":

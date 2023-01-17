@@ -9,9 +9,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>927</width>
-    <height>471</height>
+    <width>721</width>
+    <height>516</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>16</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Accounts</string>
@@ -20,7 +25,7 @@
    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #adb5bd</string>
+   <string notr="true">background-color: #5e4f47</string>
   </property>
   <widget class="QLabel" name="l_accounts">
    <property name="geometry">
@@ -37,6 +42,9 @@
      <pointsize>16</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
    <property name="text">
     <string>Accounts</string>
    </property>
@@ -45,7 +53,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>420</y>
+     <y>470</y>
      <width>131</width>
      <height>28</height>
     </rect>
@@ -80,6 +88,10 @@ color: #fff</string>
      <bold>false</bold>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff
+</string>
+   </property>
    <property name="text">
     <string>Transactions</string>
    </property>
@@ -88,8 +100,8 @@ color: #fff</string>
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>220</y>
-     <width>781</width>
+     <y>230</y>
+     <width>641</width>
      <height>191</height>
     </rect>
    </property>
@@ -119,16 +131,6 @@ color: #fff</string>
    <column>
     <property name="text">
      <string>Name</string>
-    </property>
-    <property name="font">
-     <font>
-      <family>OCR A Extended</family>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Balance</string>
     </property>
     <property name="font">
      <font>
@@ -241,8 +243,8 @@ color: #fff</string>
   <widget class="QPushButton" name="pb_analyze">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>420</y>
+     <x>480</x>
+     <y>460</y>
      <width>201</width>
      <height>28</height>
     </rect>
@@ -258,6 +260,94 @@ color: #fff</string>
    </property>
    <property name="text">
     <string>Analyze transactions</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>80</y>
+     <width>192</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <item>
+     <widget class="QLabel" name="l_balance">
+      <property name="font">
+       <font>
+        <family>OCR A Extended</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color : #fff</string>
+      </property>
+      <property name="text">
+       <string>Balance:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="l_balance_value">
+      <property name="font">
+       <font>
+        <family>OCR A Extended</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color : #Fff</string>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="pb_createtransfer">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>470</y>
+     <width>131</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#228be6;
+color: #fff</string>
+   </property>
+   <property name="text">
+    <string>Create transfer</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_accountinfo">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>180</y>
+     <width>131</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#228be6;
+color: #fff</string>
+   </property>
+   <property name="text">
+    <string>Account info</string>
    </property>
   </widget>
  </widget>

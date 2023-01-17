@@ -10,7 +10,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_AccountsForm(object):
-    def setupUi(self, AccountsForm, loginform, user):
+    def setupUi(self, AccountsForm,loginform,user):
         AccountsForm.setObjectName("AccountsForm")
         AccountsForm.setEnabled(True)
         AccountsForm.resize(721, 516)
@@ -155,6 +155,14 @@ class Ui_AccountsForm(object):
         self.pb_createtransfer.setStyleSheet("background-color:#228be6;\n"
 "color: #fff")
         self.pb_createtransfer.setObjectName("pb_createtransfer")
+        self.pb_accountinfo = QtWidgets.QPushButton(AccountsForm)
+        self.pb_accountinfo.setGeometry(QtCore.QRect(540, 180, 131, 28))
+        font = QtGui.QFont()
+        font.setFamily("OCR A Extended")
+        self.pb_accountinfo.setFont(font)
+        self.pb_accountinfo.setStyleSheet("background-color:#228be6;\n"
+"color: #fff")
+        self.pb_accountinfo.setObjectName("pb_accountinfo")
 
         self.retranslateUi(AccountsForm)
         QtCore.QMetaObject.connectSlotsByName(AccountsForm)
@@ -183,6 +191,7 @@ class Ui_AccountsForm(object):
         self.l_balance.setText(_translate("AccountsForm", "Balance:"))
         self.l_balance_value.setText(_translate("AccountsForm", "0"))
         self.pb_createtransfer.setText(_translate("AccountsForm", "Create transfer"))
+        self.pb_accountinfo.setText(_translate("AccountsForm", "Account info"))
 
 
 if __name__ == "__main__":
