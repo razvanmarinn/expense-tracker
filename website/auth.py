@@ -5,6 +5,7 @@ import bcrypt
 import time
 import random
 
+
 auth = Blueprint('auth', __name__)
 
 
@@ -16,9 +17,11 @@ def login():
         password = request.form.get('password')
         user_model = UserModel()
         user = user_model.get_user_by_username(username)
+        print(user)
         if user is not None:
-            User_object = User(user[0], user[1], user[2])
+
             if bcrypt.checkpw(password.encode('utf-8') , bytes(user[2] , 'utf-8')):
+                User_object = User(user[0], user[1], user[2])
                 time.sleep(2)
                 login_user(User_object)
                 return redirect((url_for('views.dashboard')))

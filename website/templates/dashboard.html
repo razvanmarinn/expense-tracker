@@ -1,2 +1,52 @@
 {%extends "base.html" %}
 {% block title %}Dashboard{% endblock %}
+{% block content %}
+<div>
+    <div><table>
+        <thead>
+            <tr>
+                <th>transfer_id</th>
+                <th>sender_acc_id</th>
+                <th>receiver_iban</th>
+                <th>value</th>
+                <th>status</th>
+                <th>description</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[3] }}</td>
+                <td>{{ item[4] }}</td>
+                <td>{{ item[5] }}</td>
+                <td> <button onclick = "approveTransfer({{item[0]}})">Click me</a></button>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+</div>
+
+<script>function approveTransfer(transfer_id) {
+    fetch('/approve_transfer', {
+        method: 'POST',
+        body: JSON.stringify({'transfer_id': transfer_id}),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // do something with the response data
+    });
+}</script>
+
+
+
+{% endblock %}
