@@ -2,8 +2,7 @@ import psycopg2
 from general.util import from_list_to_int, from_list_to_float, from_list_to_str
 from faker import Faker
 from datetime import datetime
-from general.exceptions import TransferToSameAccountException
-
+from general.exceptions import TransferToSameAccountException, NoAccountException
 
 fake = Faker()
 class User:
@@ -128,6 +127,7 @@ class AccountModel:
         c.execute(f"UPDATE accounts_test SET balance={value}  WHERE iban = '{IBAN}'")
         self.conn.commit()
 
+
 class Transaction:
     def __init__(self, name, value, date, type_of, account_id, userid):
         self.id = None
@@ -162,17 +162,19 @@ class TransactionModel:
         self.conn.commit()
 
     def delete_transaction_by_acc_id(self, account_id ):
+        if account_id is None:
+            raise NoAccountException("No account with this id")
         c = self.conn.cursor()
         c.execute(f"DELETE FROM transactions WHERE account_id={account_id}")
         self.conn.commit()
 
     def get_transaction_by_acc_id(self, accid):
         if accid is None:
-            return None
+            raise NoAccountException("No account with this id")
         c = self.conn.cursor()
         c.execute(f"SELECT * FROM transactions WHERE account_id={accid}")
-        return c.fetchall()
 
+        return c.fetchall()
 
 
 
@@ -190,32 +192,48 @@ class TransferModel:
    database="expense-tracker", user='postgres', password='raz', host='127.0.0.1', port= '5432')
         self.acc_model = AccountModel()
 
+    def get_transfer_id(self, sender_acc_id, iban_receiver, value):
+        c = self.conn.cursor()
+        c.execute(f"SELECT transfer_id FROM transfers WHERE sender_acc_id={sender_acc_id} and receiver_iban='{iban_receiver}' and value={value}")
+        return from_list_to_int(c.fetchone())
 
+    def execute_the_transfer(self, transfer_id):
+        c = self.conn.cursor()
+        Transfer = self.get_transfer_by_id(transfer_id)
+        test = self.acc_model.get_account_balance(Transfer[1])
+        self.acc_model.set_new_balance(test - Transfer[3], Transfer[1])
+        balance = self.acc_model.get_account_by_iban(Transfer[2])[2]
+        balance = balance + Transfer[3]
+        self.acc_model.update_balance_by_iban(balance, Transfer[2])
+        time = datetime.now().strftime("%d/%m/%Y")
+        c.execute(f"INSERT INTO transactions (name, value, date, type_of, account_id) VALUES ('transfer to another acc', -{Transfer[3]}, '{time}' , 'Transfer', '{Transfer[1]}' )")
+        c.execute(f"INSERT INTO transactions (name, value, date, type_of, account_id) VALUES ('Transfer Received', {Transfer[3]}, '{time}' , 'Transfer', '{self.acc_model.get_account_by_iban(Transfer[2])[0]}' )")
+        self.conn.commit()
 
-    def execute_the_transfer(self, Transfer):
-
-        test = self.acc_model.get_account_balance(Transfer.sender_acc_id)
-        self.acc_model.set_new_balance(test - Transfer.value, Transfer.sender_acc_id)
-
-
-        balance = self.acc_model.get_account_by_iban(Transfer.iban_receiver)[2]
-        balance = balance + Transfer.value
-        self.acc_model.update_balance_by_iban(balance, Transfer.iban_receiver)
-
+    def get_transfer_by_id(self, transfer_id):
+        c = self.conn.cursor()
+        c.execute(f"SELECT * FROM transfers WHERE transfer_id={transfer_id}")
+        return c.fetchone()
 
     def create_transfer(self, Transfer):
 
 
         if (self.acc_model.get_iban(Transfer.sender_acc_id) == Transfer.iban_receiver):
             raise TransferToSameAccountException("You can't transfer to the same account")
+
+        else:
+            c = self.conn.cursor()
+            c.execute(f"INSERT INTO transfers (sender_acc_id, receiver_iban, value,status,  description) VALUES ({Transfer.sender_acc_id}, '{Transfer.iban_receiver}', {Transfer.value},'pending', '{Transfer.description}')")
+
+            self.conn.commit()
+            return c.lastrowid
+
+    def approve_the_transfer(self, transfer_id):
         c = self.conn.cursor()
-        c.execute(f"INSERT INTO transfers (sender_acc_id, receiver_iban, value, description) VALUES ({Transfer.sender_acc_id}, '{Transfer.iban_receiver}', {Transfer.value}, '{Transfer.description}')")
-        self.execute_the_transfer(Transfer)
-        time = datetime.now().strftime("%d/%m/%Y")
-        c.execute(f"INSERT INTO transactions (name, value, date, type_of, account_id) VALUES ('transfer to another acc', -{Transfer.value}, '{time}' , 'Transfer', '{Transfer.sender_acc_id}' )")
-        c.execute(f"INSERT INTO transactions (name, value, date, type_of, account_id) VALUES ('Transfer Received', {Transfer.value}, '{time}' , 'Transfer', '{self.acc_model.get_account_by_iban(Transfer.iban_receiver)[0]}' )")
+        c.execute(f"UPDATE transfers SET status='approved' WHERE transfer_id={transfer_id}")
+        self.execute_the_transfer(transfer_id)
         self.conn.commit()
-        return c.lastrowid
+
 
 
     def delete_transfer(self, transfer_id):

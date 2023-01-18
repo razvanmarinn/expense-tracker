@@ -9,6 +9,7 @@ from src.popup.p_AccountInfo import AccountInfoPopup
 from src.m_Graphs import GraphForm
 from src.m_Models import AccountModel, TransactionModel
 from general.util import splitIntoList
+from general.exceptions import NoAccountException
 
 
 
@@ -40,7 +41,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         self.pb_removeacc.clicked.connect(self.remove_account)
         self.pb_logout.clicked.connect(self.logout)
         self.pb_analyze.clicked.connect(lambda : self.create_popup("graph"))
-        if self.actual_element[0] != "":
+        if self.actual_element is not None:
             self.pb_addtransaction.clicked.connect(lambda : self.create_popup("transaction"))
         else:
             print("No account to add transaction to")
@@ -57,75 +58,26 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
 
         curr_text = self.cb_dropdown.currentText() # CURRENT DROPDOWN TEXT
         accid = self.account_model.get_account_id(curr_text, self.current_user_id)
-        iban = self.account_model.get_iban(accid)
-        self.current_account_id = accid
-        self.current_accout_iban = iban
         if accid is None:
-            return 0
+            return
+        self.current_account_id = accid
+        self.current_accout_iban = self.account_model.get_iban(accid)
         self.l_balance_value.setText(str(self.account_model.get_account_balance(accid)))
-        temp2 = self.transaction_model.get_transaction_by_acc_id(accid)
+        transactions = self.transaction_model.get_transaction_by_acc_id(accid)
 
-        list_of_transactions = []
+        self.tw_showinfo.setRowCount(len(transactions))
 
-        if temp2 is not None:
-            list_of_transactions.extend(iter(temp2))
-
-        if list_of_transactions is not None:
-            id = []
-            name = []
-            value = []
-            type = []
-            date = []
-            for list_of_transaction in list_of_transactions:
-                id.append(list_of_transaction[0])
-                name.append(list_of_transaction[1])
-                value.append(list_of_transaction[2])
-                type.append(list_of_transaction[3])
-                date.append(list_of_transaction[4])
-
-
-            self.tw_showinfo.setRowCount(len(list_of_transactions))
-
-            for row, j in enumerate(range(len(id))):
-                id_tabel = QtWidgets.QTableWidgetItem(str(id[j]))
-                name_tabel = QtWidgets.QTableWidgetItem(str(name[j]))
-                value_tabel = QtWidgets.QTableWidgetItem(str(value[j]))
-                type_tabel = QtWidgets.QTableWidgetItem(str(type[j]))
-                date_tabel = QtWidgets.QTableWidgetItem(str(date[j]))
-                self.tw_showinfo.setItem(row, 0, id_tabel)
-                self.tw_showinfo.setItem(row, 1, name_tabel)
-                self.tw_showinfo.setItem(row, 2, value_tabel)
-                self.tw_showinfo.setItem(row, 3, date_tabel)
-                self.tw_showinfo.setItem(row, 4, type_tabel)
-
-
-
-    # def create_transaction_popup(self):
-    #     """Create transaction popup"""
-    #
-    #     else:
-    #         transaction = TransactionPopup(self)
-    #         transaction.show()
-
-
-
-    # def create_popup(self):
-    #     """Create popup window form"""
-    #     pop = PopUpWindowAcc(self)
-    #     pop.show()
-
-
-
-
-    # def create_transfer_popup(self):
-    #     """Create popup window form"""
-    #     pop = TransferPopup(self)
-    #     pop.show()
-
-    # def create_graph_popup(self):
-    #     """Create graph popup"""
-    #     graph = GraphForm(self)
-    #     graph.show()
+        for row, transaction in enumerate(transactions):
+            id_tabel = QtWidgets.QTableWidgetItem(str(transaction[0]))
+            name_tabel = QtWidgets.QTableWidgetItem(transaction[1])
+            value_tabel = QtWidgets.QTableWidgetItem(str(transaction[2]))
+            type_tabel = QtWidgets.QTableWidgetItem(str(transaction[3]))
+            date_tabel = QtWidgets.QTableWidgetItem(str(transaction[4]))
+            self.tw_showinfo.setItem(row, 0, id_tabel)
+            self.tw_showinfo.setItem(row, 1, name_tabel)
+            self.tw_showinfo.setItem(row, 2, value_tabel)
+            self.tw_showinfo.setItem(row, 3, date_tabel)
+            self.tw_showinfo.setItem(row, 4, type_tabel)
 
 
     def logout(self):
@@ -143,7 +95,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
 
     def remove_account(self):
         if self.actual_element[0] == "":
-            print("No accounts to be removed")
+           raise NoAccountException("No account to remove")
         else:
             self.transaction_model.delete_transaction_by_acc_id(self.current_account_id)
             self.account_model.delete_account(self.cb_dropdown.currentText(), self.current_user_id)

@@ -53,12 +53,20 @@ class TransactionPopup(QDialog, Ui_PopUpTransactions):
 
 
         acc_balance = self.account_model.get_account_balance(account_id)
+        try:
+            asd = float(self.le_value.text())
 
+        except ValueError:
+            print("Value error")
+            return
+            
         sign = check_for_minus_or_plus(self.le_value.text())
         if sign == "-":
             acc_balance = acc_balance - (-1 * float(self.le_value.text()))
         else:
             acc_balance = acc_balance + float(self.le_value.text())
+
+
         new_transaction = Transaction(self.le_nume.text(), float(self.le_value.text()), dt_string, self.cb_typeoftacc.currentText(), account_id, self.AccWindow.current_user_id)
         self.transaction_model.create_transaction(new_transaction)
         self.account_model.set_new_balance(acc_balance,account_id)

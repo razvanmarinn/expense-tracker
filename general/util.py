@@ -41,6 +41,6 @@ def check_for_minus_or_plus(string):
 def splitIntoList(string): # to be modified
     if string == None:
         return None
-    return string.split(" ", 3)
+    return [x for x in string.split(" ") if x != ""]
 
 

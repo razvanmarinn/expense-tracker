@@ -31,6 +31,5 @@ class PopUpWindowAcc(QDialog, Ui_Form):
             self.transaction_model.create_transaction(new_transaction)
 
             self.accwindow.cb_dropdown.addItem(self.le_accountname.text())
-            self.accwindow.create_new()
             self.accwindow.cb_dropdown.update()
             self.hide()
