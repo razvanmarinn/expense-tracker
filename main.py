@@ -1,12 +1,8 @@
-from PyQt6.QtWidgets import QApplication
+"""Main file for the application."""
 import sys
-from src.m_Login import LoginFormWindow
-
-
-
+from PyQt6.QtWidgets import QApplication
+from src.login import LoginFormWindow
 
 app = QApplication(sys.argv)
 Login = LoginFormWindow()
 sys.exit(app.exec())
-
-

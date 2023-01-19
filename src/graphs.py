@@ -1,8 +1,9 @@
+"""Module that create graphical charts for the user's account/ CONTROLLER FOR GRAPHS"""
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from PyQt6.QtWidgets import QMainWindow
 from UI.analysis import Ui_Graph
-from src.m_Models import TransactionModel
+from src.models import TransactionModel
 
 class MplCanvas(FigureCanvasQTAgg):
     """Mpl canvas class"""
@@ -39,4 +40,3 @@ class GraphForm(QMainWindow, Ui_Graph):
         mpl_canvas.axes.plot(x_axis,y_axis)
 
         self.setCentralWidget(mpl_canvas)
-

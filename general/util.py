@@ -1,13 +1,17 @@
+"""This module contains general functions that are used in the project"""
 import bcrypt
 
-def passwordHashing(password):
-        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14)).decode('utf-8')
+def password_hashing(password):
+    """Hashes the password"""
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14)).decode('utf-8')
 
-def validateCredentials(password, password_hash):
-        return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
+def validate_credentials(password, password_hash):
+    """Validates the credentials"""
+    return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
 
 
 def from_list_to_int(string):
+    """Converts components of the  list to an integer"""
     if string is None:
         return None
     res = ""
@@ -18,6 +22,7 @@ def from_list_to_int(string):
     return int(res)
 
 def from_list_to_str(string):
+    """Converts components of the  list to a string"""
     if string is None:
         return None
     res = ""
@@ -28,19 +33,22 @@ def from_list_to_str(string):
     return res
 
 def from_list_to_float(string):
+    """Converts components of the  list to a float"""
+    if string is None:
+        return None
     res = "".join(str(i) for i in string)
     return float(res)
 
 def check_for_minus_or_plus(string):
-    if string == None:
+    """Checks if the string has a minus or plus sign"""
+    if string is None:
         return None
     if type(string) in [int, float]:
         return "+" if string > 0 else "-"
     return "-" if string[0] == "-" else "+"
 
-def splitIntoList(string): # to be modified
-    if string == None:
+def split_into_list(string):
+    """Splits a string into a list"""
+    if string is None:
         return None
     return [x for x in string.split(" ") if x != ""]
-
-

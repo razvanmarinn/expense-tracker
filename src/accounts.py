@@ -1,14 +1,15 @@
+"""Accounts form GUI functionality / Controller FOR ACCOUNTS """
 from PyQt6.QtWidgets import QApplication, QDialog
 from PyQt6 import QtWidgets
 from UI.Accounts import Ui_AccountsForm
-from src.popup.p_AccountInfo import AccountInfoPopup
-from src.popup.p_Transactions import TransactionPopup
-from src.popup.p_Transfers import TransferPopup
-from src.popup.p_Accounts import PopUpWindowAcc
-from src.popup.p_AccountInfo import AccountInfoPopup
-from src.m_Graphs import GraphForm
-from src.m_Models import AccountModel, TransactionModel
-from general.util import splitIntoList
+from src.popup.p_account_info import AccountInfoPopup
+from src.popup.p_transactions import TransactionPopup
+from src.popup.p_transfers import TransferPopup
+from src.popup.p_accounts import PopUpWindowAcc
+from src.popup.p_account_info import AccountInfoPopup
+from src.graphs import GraphForm
+from src.models import AccountModel, TransactionModel
+from general.util import split_into_list
 from general.exceptions import NoAccountException
 
 
@@ -21,7 +22,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         self.setupUi(self, login_form, user)
         self.show()
         self.user =user
-        self.loginf = login_form # LOGIN FORM PASSED TO GET INFO FROM IT
+        self.login_form = login_form # LOGIN FORM PASSED TO GET INFO FROM IT
         self.max_accounts_per_user = 3 # STATIC VARIABLE
         self.current_user_id = user.id # CURRENT USER ID
         self.current_account_id = 0 # CURRENT ACCOUNT ID
@@ -33,12 +34,11 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         #add items to dropdown box
 
         element = self.account_model.get_name_of_acc(user.id) # NAMES OF THE ACCOUNTS
-        self.actual_element = splitIntoList(element) # ACTUAL_ELEMENT
+        self.actual_element = split_into_list(element) # ACTUAL_ELEMENT
         if self.actual_element is not None:
             self.cb_dropdown.addItems(self.actual_element)
-
-        self.pb_addacc.clicked.connect(lambda : self.create_popup("acc"))
         self.pb_removeacc.clicked.connect(self.remove_account)
+        self.pb_addacc.clicked.connect(lambda : self.create_popup("acc"))
         self.pb_logout.clicked.connect(self.logout)
         self.pb_analyze.clicked.connect(lambda : self.create_popup("graph"))
         if self.actual_element is not None:
@@ -88,19 +88,18 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
     def create_new(self):
         """Create a new instance of this class"""
         self.hide()
-        self.__init__(self.loginf, self.user)
-
-
+        self.__init__(self.login_form, self.user)
 
 
     def remove_account(self):
+        """Remove account from GUI and database"""
         if self.actual_element[0] == "":
-           raise NoAccountException("No account to remove")
+            raise NoAccountException("No account to remove")
         else:
             self.transaction_model.delete_transaction_by_acc_id(self.current_account_id)
             self.account_model.delete_account(self.cb_dropdown.currentText(), self.current_user_id)
             self.cb_dropdown.removeItem(self.cb_dropdown.currentIndex())
-            # self.create_new()
+            self.actual_element.remove(self.cb_dropdown.currentText())
 
     def create_popup(self, popup_type):
         pop = None

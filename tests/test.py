@@ -1,7 +1,7 @@
 
-from general.util import from_list_to_int, from_list_to_float, check_for_minus_or_plus, passwordHashing, splitIntoList, validateCredentials
+from general.util import from_list_to_int, from_list_to_float, check_for_minus_or_plus, password_hashing, split_into_list, validate_credentials
 from datetime import datetime
-from src.m_Models import User, UserModel, Transaction, TransactionModel, Account, AccountModel, TransferModel, Transfer
+from src.models import User, UserModel, Transaction, TransactionModel, Account, AccountModel, TransferModel, Transfer
 import pytest
 from general.exceptions import TransferToSameAccountException
 
@@ -26,7 +26,7 @@ def setup_test_data():
     new_transfer = Transfer(acc_id_sender, iban, transfer_value, "TEST")
     transfer_model.create_transfer(new_transfer)
     transfer_id = transfer_model.get_transfer_id(acc_id_sender, iban, transfer_value)
-    
+
     yield
     transaction_model.delete_transaction_by_acc_id(account_model.get_account_id('sender_acc', user_model.get_user_id_by_username("sender")))
     transaction_model.delete_transaction_by_acc_id(account_model.get_account_id('receive' , user_model.get_user_id_by_username("receiver")))
@@ -117,13 +117,13 @@ def test_from_list_to_int():
 
 def test_split_into_strings():
 
-    result = splitIntoList( "test hello asd" )
+    result = split_into_list( "test hello asd" )
     assert result == ['test', 'hello', 'asd']
     assert result[0] == 'test'
 
 def test_validate_password():
-    test_pass_hashed = passwordHashing("test_pass")
-    assert validateCredentials("test_pass", test_pass_hashed) == True
+    test_pass_hashed = password_hashing("test_pass")
+    assert validate_credentials("test_pass", test_pass_hashed) == True
 
 
 
