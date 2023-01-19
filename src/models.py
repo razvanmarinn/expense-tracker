@@ -243,7 +243,7 @@ class TransferModel:
     def create_transfer(self, transfer):
         """Creates a transfer"""
 
-        if (self.acc_model.get_uuid(transfer.sender_acc_id) == transfer.uuid_receiver):
+        if self.acc_model.get_uuid(transfer.sender_acc_id) == transfer.uuid_receiver:
             raise TransferToSameAccountException("You can't transfer to the same account")
         else:
             self.cursor.execute(f"INSERT INTO transfers (sender_acc_id, receiver_uuid, value,status,  description) VALUES ({transfer.sender_acc_id}, '{transfer.uuid_receiver}', {transfer.value},'pending', '{transfer.description}')")

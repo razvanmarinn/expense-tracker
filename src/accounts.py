@@ -2,7 +2,6 @@
 from PyQt6.QtWidgets import QApplication, QDialog
 from PyQt6 import QtWidgets
 from UI.Accounts import Ui_AccountsForm
-from src.popup.p_account_info import AccountInfoPopup
 from src.popup.p_transactions import TransactionPopup
 from src.popup.p_transfers import TransferPopup
 from src.popup.p_accounts import PopUpWindowAcc
