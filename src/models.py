@@ -1,11 +1,10 @@
 """This module contains the models for the application."""
 from datetime import datetime
-from faker import Faker
+import uuid
 import psycopg2
 from general.util import from_list_to_int, from_list_to_float, from_list_to_str
 from general.exceptions import TransferToSameAccountException, NoAccountException
 
-fake = Faker()
 class User:
     """This class contains the user."""
     def __init__(self, username, password):
@@ -59,7 +58,7 @@ class Account:
         self.id = None
         self.name = name
         self.balance = balance
-        self.iban = fake.iban()
+        self.uuid = uuid.uuid4()
         self.userid = userid
 
 
@@ -73,18 +72,18 @@ class AccountModel:
     def create_account(self, account):
         """Create account"""
         self.cursor.execute(
-            f"""INSERT INTO accounts_test (name, balance,iban, userid) VALUES
-             ( '{account.name}', '{account.balance}', '{account.iban}','{account.userid}') ;"""
+            f"""INSERT INTO accounts_test (name, balance,uuid, userid) VALUES
+             ( '{account.name}', '{account.balance}', '{account.uuid}','{account.userid}') ;"""
         )
         self.conn.commit()
         return self.cursor.lastrowid
 
 
-    def get_iban(self, acc_id):
-        """Get iban by account id"""
+    def get_uuid(self, acc_id):
+        """Get uuid by account id"""
         if acc_id is None:
             return None
-        self.cursor.execute(f"SELECT iban from accounts_test WHERE accounts_id = {acc_id}")
+        self.cursor.execute(f"SELECT uuid from accounts_test WHERE accounts_id = {acc_id}")
         return from_list_to_str(self.cursor.fetchone())
 
     def count_accounts(self, userid):
@@ -114,9 +113,9 @@ class AccountModel:
         .replace(",", " ")
         )
 
-    def get_account_by_iban(self, iban):
-        """Get account by iban"""
-        self.cursor.execute(f"SELECT * from accounts_test WHERE iban = '{iban}'")
+    def get_account_by_uuid(self, uuid):
+        """Get account by uuid"""
+        self.cursor.execute(f"SELECT * from accounts_test WHERE uuid = '{uuid}'")
         return self.cursor.fetchone()
 
     def set_new_balance(self, value, account_id):
@@ -130,9 +129,9 @@ class AccountModel:
         self.conn.commit()
 
 
-    def update_balance_by_iban(self, value , iban):
+    def update_balance_by_uuid(self, value , uuid):
         """Update balance by iban"""
-        self.cursor.execute(f"UPDATE accounts_test SET balance={value}  WHERE iban = '{iban}'")
+        self.cursor.execute(f"UPDATE accounts_test SET balance={value}  WHERE uuid = '{uuid}'")
         self.conn.commit()
 
 
@@ -200,9 +199,9 @@ class TransactionModel:
 
 class Transfer:
     """Transfer class"""
-    def __init__(self, sender_acc_id, iban_receiver, value, description):
+    def __init__(self, sender_acc_id, uuid_receiver, value, description):
         self.sender_acc_id = sender_acc_id
-        self.iban_receiver = str(iban_receiver)
+        self.uuid_receiver = str(uuid_receiver)
         self.value = value
         self.description = description
 
@@ -213,9 +212,9 @@ class TransferModel:
    database="expense-tracker", user='postgres', password='raz', host='127.0.0.1', port= '5432')
         self.acc_model = AccountModel()
         self.cursor = self.conn.cursor()
-    def get_transfer_id(self, sender_acc_id, iban_receiver, value):
+    def get_transfer_id(self, sender_acc_id, uuid_receiver, value):
 
-        self.cursor.execute(f"SELECT transfer_id FROM transfers WHERE sender_acc_id={sender_acc_id} and receiver_iban='{iban_receiver}' and value={value}")
+        self.cursor.execute(f"SELECT transfer_id FROM transfers WHERE sender_acc_id={sender_acc_id} and receiver_uuid ='{uuid_receiver}' and value={value}")
         return from_list_to_int(self.cursor.fetchone())
 
     def execute_the_transfer(self, transfer_id):
@@ -223,16 +222,16 @@ class TransferModel:
         actual_transfer = self.get_transfer_by_id(transfer_id)
         test = self.acc_model.get_account_balance(actual_transfer[1])
         self.acc_model.set_new_balance(test - actual_transfer[3], actual_transfer[1])
-        balance = self.acc_model.get_account_by_iban(actual_transfer[2])[2]
+        balance = self.acc_model.get_account_by_uuid(actual_transfer[2])[2]
         balance = balance + actual_transfer[3]
-        self.acc_model.update_balance_by_iban(balance, actual_transfer[2])
+        self.acc_model.update_balance_by_uuid(balance, actual_transfer[2])
         time = datetime.now().strftime("%d/%m/%Y")
         self.cursor.execute(f"""INSERT INTO transactions (name, value, date, type_of, account_id) VALUES
         ('transfer to another acc', -{actual_transfer[3]}, '{time}' ,
          'Transfer', '{actual_transfer[1]}' )""")
         self.cursor.execute(f"""INSERT INTO transactions (name, value, date, type_of, account_id) VALUES
         ('Transfer Received', {actual_transfer[3]},'{time}',
-         'Transfer', '{self.acc_model.get_account_by_iban(actual_transfer[2])[0]}' )""")
+         'Transfer', '{self.acc_model.get_account_by_uuid(actual_transfer[2])[0]}' )""")
         self.conn.commit()
 
     def get_transfer_by_id(self, transfer_id):
@@ -244,10 +243,10 @@ class TransferModel:
     def create_transfer(self, transfer):
         """Creates a transfer"""
 
-        if (self.acc_model.get_iban(transfer.sender_acc_id) == transfer.iban_receiver):
+        if (self.acc_model.get_uuid(transfer.sender_acc_id) == transfer.uuid_receiver):
             raise TransferToSameAccountException("You can't transfer to the same account")
         else:
-            self.cursor.execute(f"INSERT INTO transfers (sender_acc_id, receiver_iban, value,status,  description) VALUES ({transfer.sender_acc_id}, '{transfer.iban_receiver}', {transfer.value},'pending', '{transfer.description}')")
+            self.cursor.execute(f"INSERT INTO transfers (sender_acc_id, receiver_uuid, value,status,  description) VALUES ({transfer.sender_acc_id}, '{transfer.uuid_receiver}', {transfer.value},'pending', '{transfer.description}')")
 
             self.conn.commit()
             return self.cursor.lastrowid

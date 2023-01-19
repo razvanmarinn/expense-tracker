@@ -20,12 +20,12 @@ def setup_test_data():
     acc2 = Account('receive', 0 , user_model.get_user_id_by_username("receiver"))
     account_model.create_account(acc2)
     acc_id_receiver = account_model.get_account_id('receive', user_model.get_user_id_by_username("receiver"))
-    iban = account_model.get_iban(acc_id_receiver)
+    uuid = account_model.get_uuid(acc_id_receiver)
     acc_id_sender = account_model.get_account_id('sender_acc', user_model.get_user_id_by_username("sender"))
     transfer_value = 250
-    new_transfer = Transfer(acc_id_sender, iban, transfer_value, "TEST")
+    new_transfer = Transfer(acc_id_sender, uuid, transfer_value, "TEST")
     transfer_model.create_transfer(new_transfer)
-    transfer_id = transfer_model.get_transfer_id(acc_id_sender, iban, transfer_value)
+    transfer_id = transfer_model.get_transfer_id(acc_id_sender, uuid, transfer_value)
 
     yield
     transaction_model.delete_transaction_by_acc_id(account_model.get_account_id('sender_acc', user_model.get_user_id_by_username("sender")))
@@ -42,10 +42,10 @@ def test_create_users(setup_test_data):
     assert user1 is not None
     assert user2 is not None
 
-def test_iban(setup_test_data):
+def test_uuid(setup_test_data):
     acc_id_receiver = account_model.get_account_id('receive', user_model.get_user_id_by_username("receiver"))
-    iban = account_model.get_iban(acc_id_receiver)
-    assert len(iban) == 22
+    uuid = account_model.get_uuid(acc_id_receiver)
+    assert len(uuid) == 36
 
 
 def test_create_accounts(setup_test_data):
@@ -59,11 +59,10 @@ def test_create_accounts(setup_test_data):
 def test_transfer_between_users(setup_test_data):
     acc_id_sender = account_model.get_account_id('sender_acc', user_model.get_user_id_by_username("sender"))
     acc_id_receiver = account_model.get_account_id('receive', user_model.get_user_id_by_username("receiver"))
-    iban = account_model.get_iban(acc_id_receiver)
+    uuid = account_model.get_uuid(acc_id_receiver)
     transfer_value = 250
-    transfer_id = transfer_model.get_transfer_id(acc_id_sender, iban, transfer_value)
+    transfer_id = transfer_model.get_transfer_id(acc_id_sender, uuid, transfer_value)
     transfer_model.execute_the_transfer(transfer_id)
-    #asd = transfer_model.get_transfer_by_id(transfer_id)
     assert account_model.get_account_balance(acc_id_sender) == 250
     assert account_model.get_account_balance(acc_id_receiver) == 250
     assert transaction_model.get_transaction_by_acc_id(acc_id_sender) is not None
@@ -72,10 +71,10 @@ def test_transfer_between_users(setup_test_data):
 
 def test_approve_transfer(setup_test_data):
     acc_id_receiver = account_model.get_account_id('receive', user_model.get_user_id_by_username("receiver"))
-    iban = account_model.get_iban(acc_id_receiver)
+    uuid = account_model.get_uuid(acc_id_receiver)
     acc_id_sender = account_model.get_account_id('sender_acc', user_model.get_user_id_by_username("sender"))
     transfer_value = 250
-    transfer_id = transfer_model.get_transfer_id(acc_id_sender, iban, transfer_value)
+    transfer_id = transfer_model.get_transfer_id(acc_id_sender, uuid, transfer_value)
     transfer_model.approve_the_transfer(transfer_id)
     assert account_model.get_account_balance(acc_id_sender) == 250
     assert account_model.get_account_balance(acc_id_receiver) == 250
@@ -86,9 +85,9 @@ def test_approve_transfer(setup_test_data):
 def test_transfer_between_same_user(setup_test_data):
    with pytest.raises(TransferToSameAccountException):
         acc_id_receiver = account_model.get_account_id('receive', user_model.get_user_id_by_username("receiver"))
-        iban = account_model.get_iban(acc_id_receiver)
+        uuid = account_model.get_uuid(acc_id_receiver)
         transfer_value = 2150
-        new_transfer = Transfer(acc_id_receiver, iban, transfer_value, "TEST")
+        new_transfer = Transfer(acc_id_receiver, uuid, transfer_value, "TEST")
         transfer_model.create_transfer(new_transfer)
 
 

@@ -26,7 +26,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         self.max_accounts_per_user = 3 # STATIC VARIABLE
         self.current_user_id = user.id # CURRENT USER ID
         self.current_account_id = 0 # CURRENT ACCOUNT ID
-        self.current_accout_iban = "" # CURRENT ACCOUNT IBAN
+        self.current_account_uuid = "" # CURRENT ACCOUNT IBAN
         self.account_model = AccountModel()
         self.transaction_model = TransactionModel()
 
@@ -61,7 +61,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         if accid is None:
             return
         self.current_account_id = accid
-        self.current_accout_iban = self.account_model.get_iban(accid)
+        self.current_account_uuid = self.account_model.get_uuid(accid)
         self.l_balance_value.setText(str(self.account_model.get_account_balance(accid)))
         transactions = self.transaction_model.get_transaction_by_acc_id(accid)
 
@@ -91,7 +91,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
         self.__init__(self.login_form, self.user)
 
 
-    def remove_account(self):
+    def remove_account(self): ## TO BE LOOKED AT
         """Remove account from GUI and database"""
         if self.actual_element[0] == "":
             raise NoAccountException("No account to remove")
@@ -99,8 +99,7 @@ class AccountsFormTab(QDialog, Ui_AccountsForm):
             self.transaction_model.delete_transaction_by_acc_id(self.current_account_id)
             self.account_model.delete_account(self.cb_dropdown.currentText(), self.current_user_id)
             self.cb_dropdown.removeItem(self.cb_dropdown.currentIndex())
-            self.actual_element.remove(self.cb_dropdown.currentText())
-
+            #self.actual_element.remove(self.cb_dropdown.currentText())
     def create_popup(self, popup_type):
         pop = None
         if popup_type == "acc":
