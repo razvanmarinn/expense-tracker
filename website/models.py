@@ -1,5 +1,6 @@
 from flask_login import LoginManager
 import psycopg2
+import uuid
 from datetime import datetime
 
 
@@ -118,7 +119,7 @@ class Account:
         self.id = None
         self.name = name
         self.balance = balance
-        self.iban = fake.iban()
+        self.uuid = uuid.uuid4()
         self.userid = userid
 
 
@@ -136,11 +137,11 @@ class AccountModel:
         return c.lastrowid
 
 
-    def get_iban(self, acc_id):
+    def get_uuid(self, acc_id):
         if acc_id == None:
             return None
         c = self.conn.cursor()
-        c.execute(f"SELECT iban from accounts_test WHERE accounts_id = {acc_id}")
+        c.execute(f"SELECT uuid from accounts_test WHERE accounts_id = {acc_id}")
         return from_list_to_str(c.fetchone())
 
     def count_accounts(self, userid):
@@ -170,9 +171,9 @@ class AccountModel:
         .replace(",", " ")
         )
 
-    def get_account_by_iban(self, IBAN):
+    def get_account_by_uuid(self, uuid):
         c = self.conn.cursor()
-        c.execute(f"SELECT * from accounts_test WHERE iban = '{IBAN}'")
+        c.execute(f"SELECT * from accounts_test WHERE uuid = '{uuid}'")
         return c.fetchone()
 
     def set_new_balance(self, value, account_id):
@@ -186,15 +187,15 @@ class AccountModel:
         self.conn.commit()
 
 
-    def update_balance_by_iban(self, value , IBAN):
+    def update_balance_by_uuid(self, value , uuid):
         c = self.conn.cursor()
-        c.execute(f"UPDATE accounts_test SET balance={value}  WHERE iban = '{IBAN}'")
+        c.execute(f"UPDATE accounts_test SET balance={value}  WHERE uuid = '{uuid}'")
         self.conn.commit()
 
 class Transfer:
-    def __init__(self, sender_acc_id, iban_receiver, value, description) :
+    def __init__(self, sender_acc_id, uuid_receiver, value, description) :
        self.sender_acc_id = sender_acc_id
-       self.iban_receiver = str(iban_receiver)
+       self.uuid_receiver = str(uuid_receiver)
        self.value = value
        self.description = description
 
@@ -205,9 +206,9 @@ class TransferModel:
    database="expense-tracker", user='postgres', password='raz', host='127.0.0.1', port= '5432')
         self.acc_model = AccountModel()
 
-    def get_transfer_id(self, sender_acc_id, iban_receiver, value):
+    def get_transfer_id(self, sender_acc_id, uuid_receiver, value):
         c = self.conn.cursor()
-        c.execute(f"SELECT transfer_id FROM transfers WHERE sender_acc_id={sender_acc_id} and receiver_iban='{iban_receiver}' and value={value}")
+        c.execute(f"SELECT transfer_id FROM transfers WHERE sender_acc_id={sender_acc_id} and receiver_uuid='{uuid_receiver}' and value={value}")
         return from_list_to_int(c.fetchone())
 
     def execute_the_transfer(self, transfer_id):
@@ -215,12 +216,12 @@ class TransferModel:
         Transfer = self.get_transfer_by_id(transfer_id)
         test = self.acc_model.get_account_balance(Transfer[1])
         self.acc_model.set_new_balance(test - Transfer[3], Transfer[1])
-        balance = self.acc_model.get_account_by_iban(Transfer[2])[2]
+        balance = self.acc_model.get_account_by_uuid(Transfer[2])[2]
         balance = balance + Transfer[3]
-        self.acc_model.update_balance_by_iban(balance, Transfer[2])
+        self.acc_model.update_balance_by_uuid(balance, Transfer[2])
         time = datetime.now().strftime("%d/%m/%Y")
         c.execute(f"INSERT INTO transactions (name, value, date, type_of, account_id) VALUES ('transfer to another acc', -{Transfer[3]}, '{time}' , 'Transfer', '{Transfer[1]}' )")
-        c.execute(f"INSERT INTO transactions (name, value, date, type_of, account_id) VALUES ('Transfer Received', {Transfer[3]}, '{time}' , 'Transfer', '{self.acc_model.get_account_by_iban(Transfer[2])[0]}' )")
+        c.execute(f"INSERT INTO transactions (name, value, date, type_of, account_id) VALUES ('Transfer Received', {Transfer[3]}, '{time}' , 'Transfer', '{self.acc_model.get_account_by_uuid(Transfer[2])[0]}' )")
         self.conn.commit()
 
     def get_transfer_by_id(self, transfer_id):
