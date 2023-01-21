@@ -10,5 +10,5 @@ class AccountInfoPopup(QDialog, Ui_Form):
         self.acc_window = acc_window
         self.show()
 
-        self.l_iban.setText(self.acc_window.current_account_uuid)
-        self.l_accountid.setText(str(self.acc_window.current_account_id))
+        self.l_iban.setText(self.acc_window.account_dto.account_uuid)
+        self.l_accountid.setText(str(self.acc_window.account_dto.account_id))

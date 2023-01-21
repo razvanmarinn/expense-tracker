@@ -3,7 +3,7 @@ from datetime import datetime
 import uuid
 import psycopg2
 from general.util import from_list_to_int, from_list_to_float, from_list_to_str
-from general.exceptions import TransferToSameAccountException, NoAccountException
+from general.exceptions import TransferToSameAccountException, NoAccountException, NoTransactionWithThisIdException
 
 class User:
     """This class contains the user."""
@@ -192,7 +192,8 @@ class TransactionModel:
             raise NoAccountException("No account with this id")
 
         self.cursor.execute(f"SELECT * FROM transactions WHERE account_id={accid}")
-
+        #if len(self.cursor.fetchall()) < 1:
+            #raise NoTransactionWithThisIdException("No transaction with this id")
         return self.cursor.fetchall()
 
 

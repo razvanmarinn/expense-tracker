@@ -3,7 +3,7 @@ from general.util import from_list_to_int, from_list_to_float, check_for_minus_o
 from datetime import datetime
 from src.models import User, UserModel, Transaction, TransactionModel, Account, AccountModel, TransferModel, Transfer
 import pytest
-from general.exceptions import TransferToSameAccountException
+from general.exceptions import TransferToSameAccountException, NoAccountException,NoTransactionWithThisIdException
 
 
 user_model = UserModel()
@@ -35,6 +35,7 @@ def setup_test_data():
     user_model.delete_user_by_username('sender')
     user_model.delete_user_by_username('receiver')
     transfer_model.delete_transfer(transfer_id)
+
 
 def test_create_users(setup_test_data):
     user1 = user_model.get_user_by_username("sender")
@@ -123,13 +124,5 @@ def test_split_into_strings():
 def test_validate_password():
     test_pass_hashed = password_hashing("test_pass")
     assert validate_credentials("test_pass", test_pass_hashed) == True
-
-
-
-
-
-
-
-
 
 
