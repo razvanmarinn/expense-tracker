@@ -1,12 +1,13 @@
-from src.models import AccountModel, TransactionModel
+"""Account Controller"""
 from src.models import  AccountModel, TransactionModel
-from dtos.accounts_dto import AccountDTO
 from src.popup.p_accounts import PopUpWindowAcc
+from src.popup.p_transfers import TransferPopup
 from src.popup.p_account_info import AccountInfoPopup
 from src.popup.p_transactions import TransactionPopup
-
+from dtos.accounts_dto import AccountDTO
 
 class AccountsController():
+    """Account controller class"""
     def __init__(self, view):
         self.view = view
         self.account_model = AccountModel()
@@ -15,11 +16,11 @@ class AccountsController():
         self.view.pb_removeacc.clicked.connect(self.remove_account)
         self.view.pb_analyze.clicked.connect(self.create_analyze_popup)
         self.view.pb_addtransaction.clicked.connect(self.create_transaction_popup)
-        self.view.pb_createtransfer.clicked.connect(self.create_transfer_popup)
         self.view.pb_accountinfo.clicked.connect(self.create_account_info_popup)
 
 
     def get_account_data(self, account_id):
+        """Get account data from database"""
         if account_id is None:
             return None
         acc_uuid = self.account_model.get_uuid(account_id)
@@ -31,12 +32,13 @@ class AccountsController():
         """Remove account from GUI and database"""
 
         self.transaction_model.delete_transaction_by_acc_id(self.view.account_dto.account_id)
-        self.account_model.delete_account(self.view.cb_dropdown.currentText(), self.view.current_user_id)
+        self.account_model.delete_account(self.view.cb_dropdown.currentText(), self.view.user.id)
         self.view.cb_dropdown.removeItem(self.view.cb_dropdown.currentIndex())
 
     def get_current_account_id(self):
+        """Get the current account id"""
         curr_text = self.view.cb_dropdown.currentText() # CURRENT DROPDOWN TEXT
-        acc_id = self.account_model.get_account_id(curr_text, self.view.current_user_id)
+        acc_id = self.account_model.get_account_id(curr_text, self.view.user.id)
         return acc_id
 
     # def get_current_account_uuid(self, account_id):
@@ -54,18 +56,12 @@ class AccountsController():
         """Create a new transaction popup"""
         self.view.popup = TransactionPopup(self.view)
 
+
     def create_transfer_popup(self):
         """Create a new transfer popup"""
-        # Code to create a new transfer popup
+        self.view.popup = TransferPopup(self.view)
+        self.view.popup.show()
 
     def create_account_info_popup(self):
         """Create a new account info popup"""
         self.view.popup = AccountInfoPopup(self.view)
-
-    def update_view_data(self):
-        """Update the view with data from the model"""
-        # Code to update the view with data from the account_model and transaction_model
-
-
-
-

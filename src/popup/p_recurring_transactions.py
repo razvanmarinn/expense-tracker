@@ -11,8 +11,4 @@ class RecurringForm(QDialog, Ui_ReccuringTransactionForm):
         self.setupUi(self, transactions_window)
         self.acc_window = transactions_window.acc_window
         self.account_model = AccountModel()
-
-        # element = self.account_model.get_name_of_acc(self.acc_window.current_user_id) # NAMES OF THE ACCOUNTS
-        # actual_element = split_into_list(element) # ACTUAL_ELEMENT
-        # self.cb_accounts.addItems(actual_element)
         add_drop_down_items(self)

@@ -3,7 +3,7 @@ from datetime import datetime
 import uuid
 import psycopg2
 from general.util import from_list_to_int, from_list_to_float, from_list_to_str
-from general.exceptions import TransferToSameAccountException, NoAccountException, NoTransactionWithThisIdException
+from general.exceptions import TransferToSameAccountException, NoAccountException
 
 class User:
     """This class contains the user."""

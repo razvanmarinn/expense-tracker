@@ -5,11 +5,10 @@ from controllers.popup_accounts_controller import PopUpAccountsController
 
 
 class PopUpWindowAcc(QDialog, Ui_Form):
-
+    """Popup window class"""
     def __init__(self, acc_window):
         super().__init__(acc_window)
         self.setupUi(self)
         self.show()
         self.acc_window = acc_window
         self.controller = PopUpAccountsController(self, self.acc_window)
-
