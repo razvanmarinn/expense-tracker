@@ -4,9 +4,10 @@ import bcrypt
 import psycopg2
 from PyQt6.QtWidgets import QMainWindow
 from general.util import password_hashing
-from src.accounts import AccountsFormTab
+#from src.views.accounts import AccountsFormTab
+from src.views.main import MainWindow
 from src.models import UserModel, User
-from dtos.user_dto import UserDTO
+from src.dtos.user_dto import UserDTO
 
 
 salt = bcrypt.gensalt()
@@ -65,5 +66,5 @@ class LoginController():
     def switch_to_accounts(self, user: UserDTO):
         """Switch to accounts tab"""
         self.window= QMainWindow()
-        self.ui_accounts = AccountsFormTab(self.view, user)
+        self.ui_accounts = MainWindow(user)
         self.view.hide()

@@ -60,4 +60,4 @@ def add_drop_down_items(acc_window):
     element = acc_window.account_model.get_name_of_acc(acc_window.user.id) # NAMES OF THE ACCOUNTS
     acc_window.actual_element = split_into_list(element) # ACTUAL_ELEMENT
     if acc_window.actual_element is not None:
-        acc_window.cb_dropdown.addItems(acc_window.actual_element)
+       acc_window.cb_dropdown.addItems(acc_window.actual_element)

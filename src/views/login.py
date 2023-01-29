@@ -1,7 +1,7 @@
 """This module contains the login // controller for login"""
 from PyQt6.QtWidgets import QDialog
 from UI.Login import Ui_LoginForm
-from controllers.login_controller import LoginController
+from src.controllers.login_controller import LoginController
 
 class LoginFormWindow(QDialog, Ui_LoginForm):
     """Login form window"""
@@ -10,3 +10,7 @@ class LoginFormWindow(QDialog, Ui_LoginForm):
         self.setupUi(self)
         self.show()
         self.controller = LoginController(self)
+
+
+
+    

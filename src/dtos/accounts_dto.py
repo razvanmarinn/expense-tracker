@@ -1,5 +1,5 @@
 """Account DTO"""""
-from dtos.transactions_dto import TransactionDTO
+from src.dtos.transactions_dto import TransactionDTO
 class AccountDTO:
     """Account Data Transfer Object class"""
     def __init__(self, account_id: int, account_uuid: str ,balance: int, transactions: list[TransactionDTO]):

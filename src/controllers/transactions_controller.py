@@ -1,10 +1,8 @@
 """This module contains the controller for the transactions window"""
 from datetime import datetime
-from src.popup.p_recurring_transactions import RecurringForm
 from src.models import TransactionModel , AccountModel, Transaction
-from src.popup.p_custom_category import PopUpAddCategory
 from general.util import check_for_minus_or_plus
-from dtos.transactions_dto import TransactionDTO
+from src.dtos.transactions_dto import TransactionDTO
 
 class TransactionController():
     """This class contains the controller for the transactions window"""
@@ -14,17 +12,6 @@ class TransactionController():
         self.account_model = AccountModel()
         self.transaction_model = TransactionModel()
         self.view.pb_addTransactions.clicked.connect(self.create_transaction)
-        self.view.pb_add_type_of_category.clicked.connect(self.create_popup_add_category)
-
-    def create_popup_recurring(self):
-        """Create a new popup for recurring transactions"""
-        pop = RecurringForm(self)
-        pop.show()
-
-    def create_popup_add_category(self):
-        """Create a new popup for adding a new category"""
-        pop = PopUpAddCategory(self)
-        pop.show()
 
     def create_transaction(self):
         """This function creates a new transaction"""
@@ -32,7 +19,7 @@ class TransactionController():
         self.transaction_model.create_transaction(new_transaction)
         self.update_account_balance(new_transaction)
         self.view.hide()
-        self.acc_window.set_data()
+        self.acc_window.accounts_form.set_data()
 
 
     def create_new_transaction(self):

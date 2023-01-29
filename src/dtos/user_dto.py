@@ -6,4 +6,3 @@ class UserDTO:
     def __init__(self, user: User):
         self.id = user.id
         self.username = user.username
-        self.password = user.password

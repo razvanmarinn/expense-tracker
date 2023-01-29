@@ -1,7 +1,7 @@
 """This module contains the class for the popup window to add a custom category to the combobox"""
 from PyQt6.QtWidgets import QDialog
 from UI.popup import Ui_Form
-from controllers.popup_accounts_controller import PopUpAccountsController
+from src.controllers.popup_accounts_controller import PopUpAccountsController
 
 
 class PopUpWindowAcc(QDialog, Ui_Form):

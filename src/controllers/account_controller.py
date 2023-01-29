@@ -1,10 +1,9 @@
 """Account Controller"""
 from src.models import  AccountModel, TransactionModel
-from src.popup.p_accounts import PopUpWindowAcc
-from src.popup.p_transfers import TransferPopup
-from src.popup.p_account_info import AccountInfoPopup
-from src.popup.p_transactions import TransactionPopup
-from dtos.accounts_dto import AccountDTO
+from src.views.popup.p_accounts import PopUpWindowAcc
+from src.views.popup.p_account_info import AccountInfoPopup
+from src.dtos.accounts_dto import AccountDTO
+
 
 class AccountsController():
     """Account controller class"""
@@ -12,11 +11,7 @@ class AccountsController():
         self.view = view
         self.account_model = AccountModel()
         self.transaction_model = TransactionModel()
-        self.view.pb_addacc.clicked.connect(self.create_account_poup)
-        self.view.pb_removeacc.clicked.connect(self.remove_account)
-        self.view.pb_analyze.clicked.connect(self.create_analyze_popup)
-        self.view.pb_addtransaction.clicked.connect(self.create_transaction_popup)
-        self.view.pb_accountinfo.clicked.connect(self.create_account_info_popup)
+
 
 
     def get_account_data(self, account_id):
@@ -48,20 +43,9 @@ class AccountsController():
         """Create a new account popup"""
         self.view.popup = PopUpWindowAcc(self.view)
 
-    def create_analyze_popup(self):
-        """Create a new analyze popup"""
-        # Code to create a new analyze popup
-
-    def create_transaction_popup(self):
-        """Create a new transaction popup"""
-        self.view.popup = TransactionPopup(self.view)
-
-
-    def create_transfer_popup(self):
-        """Create a new transfer popup"""
-        self.view.popup = TransferPopup(self.view)
-        self.view.popup.show()
-
     def create_account_info_popup(self):
         """Create a new account info popup"""
         self.view.popup = AccountInfoPopup(self.view)
+
+
+
