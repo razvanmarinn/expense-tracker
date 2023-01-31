@@ -3,6 +3,9 @@ from src.models import  AccountModel, TransactionModel
 from src.views.popup.p_accounts import PopUpWindowAcc
 from src.views.popup.p_account_info import AccountInfoPopup
 from src.dtos.accounts_dto import AccountDTO
+from general.util import make_api_get_request, make_api_delete_request
+from src.controllers.transactions_controller import TransactionController
+from src.headers import headers
 
 
 class AccountsController():
@@ -13,22 +16,34 @@ class AccountsController():
         self.transaction_model = TransactionModel()
 
 
-
     def get_account_data(self, account_id):
-        """Get account data from database"""
-        if account_id is None:
+        """Get account data"""
+        endpoint_url = "http://{}:{}/accounts/get_account_by_id/{}".format("127.0.0.1", "8000", account_id)
+        user_data = make_api_get_request(endpoint_url, headers=headers)
+        print(user_data)
+        if user_data is None:
+
             return None
-        acc_uuid = self.account_model.get_uuid(account_id)
-        balance = self.account_model.get_account_balance(account_id)
-        transactions = self.transaction_model.get_transaction_by_acc_id(account_id)
-        return AccountDTO(account_id, acc_uuid, balance, transactions)
+        else:
+            transactions = self.get_transactions(account_id)
+            return AccountDTO(user_data["id"], user_data["uuid"], user_data["balance"], transactions)
+
+    def get_transactions(self, account_id):
+        """Get all transactions for a specific account"""
+        endpoint_url = "http://{}:{}/transactions/get_transactions/{}".format("127.0.0.1", "8000", account_id)
+        return make_api_get_request(endpoint_url, headers=headers)
+
 
     def remove_account(self):
-        """Remove account from GUI and database"""
-
-        self.transaction_model.delete_transaction_by_acc_id(self.view.account_dto.account_id)
-        self.account_model.delete_account(self.view.cb_dropdown.currentText(), self.view.user.id)
+        """Remove an account"""
+        transaction_controller = TransactionController(self.view, self)
+        transaction_controller.delete_transaction_by_acc_id(self.view.account_dto.account_id)
+        endpoint_url = "http://{}:{}/accounts/delete_account/{}/{}".format("127.0.0.1", "8000", self.view.cb_dropdown.currentText(), self.view.user.id)
+        make_api_delete_request(endpoint_url, headers=headers)
         self.view.cb_dropdown.removeItem(self.view.cb_dropdown.currentIndex())
+
+
+
 
     def get_current_account_id(self):
         """Get the current account id"""

@@ -56,8 +56,7 @@ class LoginController():
         if user is None:
             hashed_pass = password_hashing(self.view.le_password.text())
             new_user = User(self.view.le_username.text(), hashed_pass)
-            user_dto = self.create_user_dto(new_user)
-            self.user_model.create_user(user_dto)
+            self.user_model.create_user(new_user)
             new_user.id = self.cursor.lastrowid
             self.view.l_loggedin.setText("Account created")
         else:

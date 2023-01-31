@@ -94,8 +94,9 @@ class TransactionFrame(QFrame):
 
 ####
         self.category_list = ['Food', 'Bills', 'Entertainment', 'Transport', 'Other']
-        self.transaction_model = TransactionController(self, self.parent)
+        self.transaction_controller = TransactionController(self, self.parent)
         self.show()
+        self.pb_addTransactions.clicked.connect(self.transaction_controller.create_transaction)
         #self.pb_CreateRecurringPopup.clicked.connect(lambda: self.create_popup("recurring_trans"))
         for i in self.category_list:
             self.cb_typeoftacc.addItem(i)

@@ -145,6 +145,7 @@ class AccountsFormTab(QFrame):
         self.current_nr_of_acc = self.account_model.count_accounts(parent.user.id)
         add_drop_down_items(self)
         self.controller = AccountsController(self)
+        if 
         self.account_dto = self.controller.get_account_data(self.controller.get_current_account_id())
         #self.cb_dropdown.currentIndexChanged.connect(partial(self.set_data, self.account_dto))
         self.cb_dropdown.currentIndexChanged.connect(self.set_data)

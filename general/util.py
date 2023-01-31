@@ -1,5 +1,6 @@
 """This module contains general functions that are used in the project"""
 import bcrypt
+import requests
 
 def password_hashing(password):
     """Hashes the password"""
@@ -61,3 +62,19 @@ def add_drop_down_items(acc_window):
     acc_window.actual_element = split_into_list(element) # ACTUAL_ELEMENT
     if acc_window.actual_element is not None:
        acc_window.cb_dropdown.addItems(acc_window.actual_element)
+
+
+def make_api_get_request(endpoint_url , headers):
+    """Makes an api request"""
+    response = requests.get(endpoint_url, headers=headers)
+    return response.json()
+
+def make_api_post_request(endpoint_url, headers, data):
+    """Makes an api request"""
+    response = requests.post(endpoint_url, headers=headers, data=data)
+    return response.json()
+
+def make_api_delete_request(endpoint_url, headers):
+    """Makes an api request"""
+    response = requests.delete(endpoint_url, headers=headers)
+    return "OK"
