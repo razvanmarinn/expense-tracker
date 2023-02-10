@@ -51,5 +51,16 @@ class AccountsController():
         """Create a new account info popup"""
         self.view.popup = AccountInfoPopup(self.view)
 
+    @staticmethod
+    def total_balance_of_a_user(user_id):
+        """Get total balance of a user"""
+        endpoint_url = "http://{}:{}/users/get_total_balance/{}".format("127.0.0.1", "8000", user_id)
+        user_data = make_api_get_request(endpoint_url, headers=headers)
+        return user_data
 
-
+    @staticmethod
+    def get_monthly_spendings(user_id, month, year):
+        """Get monthly spendings"""
+        endpoint_url = "http://{}:{}/users/get_spending_by_month/{}/{}/{}".format("127.0.0.1", "8000", user_id, month, year)
+        user_data = make_api_get_request(endpoint_url, headers=headers)
+        return user_data

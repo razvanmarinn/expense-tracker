@@ -22,16 +22,15 @@ class MainWindow(QMainWindow):
         self.ui.stackedWidget.addWidget(self.accounts_form)
         self.transfer_form = TransferFrame(self)
         self.ui.stackedWidget.addWidget(self.transfer_form)
-        self.transactions_form = TransactionsFrame(self, self.accounts_form)
-        self.ui.stackedWidget.addWidget(self.transactions_form)
         self.welcome_form = WelcomeFrame(self)
         self.ui.stackedWidget.addWidget(self.welcome_form)
-
+        self.transactions_form = TransactionsFrame(self, self.accounts_form,self.welcome_form)
+        self.ui.stackedWidget.addWidget(self.transactions_form)
         self.ui.stackedWidget.setCurrentWidget(self.welcome_form)
-        
-        self.ui.Btn_Toggle.clicked.connect(lambda: self.toggle_menu(200, True))
 
-        self.ui.btn_page_1.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.accounts_form))
+        self.ui.Btn_Toggle.clicked.connect(lambda: self.toggle_menu(150, True))
+        self.ui.btn_page_1.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.welcome_form))
+        self.ui.btn_page_7.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.accounts_form))
 
         self.ui.btn_page_2.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.transactions_form))
 
