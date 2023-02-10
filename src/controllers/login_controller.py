@@ -1,22 +1,17 @@
 """Login controller"""
-import time
-import bcrypt
 import psycopg2
+from PyQt6 import QtTest
 from PyQt6.QtWidgets import QMainWindow
-from general.util import password_hashing
-#from src.views.accounts import AccountsFormTab
+from general.util import make_api_get_request, make_api_post_request, update_env_file
 from src.views.main import MainWindow
-from src.models import UserModel, User
 from src.dtos.user_dto import UserDTO
+from src.headers import headers
 
-
-salt = bcrypt.gensalt()
 
 class LoginController():
     """Login controller"""
     def __init__(self, view):
         self.view = view
-        self.user_model = UserModel()
         self.view.b_login.clicked.connect(self.login)
         self.view.b_createacc.clicked.connect(self.sign_up)
 
@@ -27,40 +22,37 @@ class LoginController():
         self.conn.autocommit = True
 
 
-    def create_user_dto(self, user: User):
+    def create_user_dto(self, username, user_id):
         """Create a user dto"""
-        user_dto = UserDTO(user)
+        user_dto = UserDTO(username, user_id)
         return user_dto
 
     def login(self):
-        """Login button functionality"""
-        user = self.user_model.get_user_by_username(self.view.le_username.text())
-        if user is  None:
-            self.view.l_loggedin.setText("Username doesn't exist")
-        else:
-
-            if bcrypt.checkpw(self.view.le_password.text().encode('utf-8') , bytes(user[2] , 'utf-8')):
-                self.view.l_loggedin.setText("Logged in")
-                current_user =  User(user[1], user[2])
-                current_user.id = user[0]
-                user_dto = self.create_user_dto(current_user)
-                time.sleep(2)
-                self.switch_to_accounts(user_dto)
-            else:
+        endpoint_url = "http://{}:{}/user/login/{}/{}".format("127.0.0.1", "8000", self.view.le_username.text(), self.view.le_password.text())
+        user_data = make_api_post_request(endpoint_url, headers=headers)
+        if "detail" in user_data:
+            if user_data["detail"] == "User not found" :
+                self.view.l_loggedin.setText("Username doesn't exist")
+            elif user_data["detail"] == "Wrong password":
                 self.view.l_loggedin.setText("Password is not matching")
-
+        else:
+            self.view.l_loggedin.setText("Logged in")
+            QtTest.QTest.qWait(500)
+            user_dto = self.create_user_dto(user_data["username"], user_data["id"])
+            update_env_file("API_KEY", user_data["access_token"])
+            self.switch_to_accounts(user_dto)
 
     def sign_up(self):
         """Create the user account and encrypt the password using BCRYPT"""
-        user = self.user_model.get_user_by_username(self.view.le_username.text())
-        if user is None:
-            hashed_pass = password_hashing(self.view.le_password.text())
-            new_user = User(self.view.le_username.text(), hashed_pass)
-            self.user_model.create_user(new_user)
-            new_user.id = self.cursor.lastrowid
-            self.view.l_loggedin.setText("Account created")
-        else:
+        endpoint_url = "http://{}:{}/user/get_user/{}".format("127.0.0.1", "8000", self.view.le_username.text())
+        user_data = make_api_get_request(endpoint_url, headers=headers)
+        if user_data is None:
             self.view.l_loggedin.setText("username already exists")
+
+        endpoint_url = "http://{}:{}/user/create_user/{}/{}".format("127.0.0.1", "8000", self.view.le_username.text(), self.view.le_password.text())
+        user_data = make_api_post_request(endpoint_url, headers=headers)
+        self.view.l_loggedin.setText("Account created")
+
 
     def switch_to_accounts(self, user: UserDTO):
         """Switch to accounts tab"""

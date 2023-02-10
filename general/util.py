@@ -1,15 +1,6 @@
 """This module contains general functions that are used in the project"""
-import bcrypt
 import requests
-
-def password_hashing(password):
-    """Hashes the password"""
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14)).decode('utf-8')
-
-def validate_credentials(password, password_hash):
-    """Validates the credentials"""
-    return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
-
+from src.headers import headers
 
 def from_list_to_int(string):
     """Converts components of the  list to an integer"""
@@ -56,12 +47,15 @@ def split_into_list(string):
 
 
 
-def add_drop_down_items(acc_window):
+def add_drop_down_items(userid, acc_window):
     """Adds the items to the drop down menu"""
-    element = acc_window.account_model.get_name_of_acc(acc_window.user.id) # NAMES OF THE ACCOUNTS
-    acc_window.actual_element = split_into_list(element) # ACTUAL_ELEMENT
-    if acc_window.actual_element is not None:
-       acc_window.cb_dropdown.addItems(acc_window.actual_element)
+    endpoint_url = "http://{}:{}/accounts/get_accounts_name/{}".format("127.0.0.1", "8000", userid)
+    user_data = make_api_get_request(endpoint_url, headers=headers)
+    print(user_data)
+    #element = acc_window.account_model.get_name_of_acc(acc_window.user.id) # NAMES OF THE ACCOUNTS
+    actual_element = split_into_list(user_data) # ACTUAL_ELEMENT
+    if actual_element is not None:
+       acc_window.cb_dropdown.addItems(actual_element)
 
 
 def make_api_get_request(endpoint_url , headers):
@@ -69,12 +63,22 @@ def make_api_get_request(endpoint_url , headers):
     response = requests.get(endpoint_url, headers=headers)
     return response.json()
 
-def make_api_post_request(endpoint_url, headers, data):
+def make_api_post_request(endpoint_url, headers):
     """Makes an api request"""
-    response = requests.post(endpoint_url, headers=headers, data=data)
+    response = requests.post(endpoint_url, headers=headers)
     return response.json()
 
 def make_api_delete_request(endpoint_url, headers):
     """Makes an api request"""
     response = requests.delete(endpoint_url, headers=headers)
     return "OK"
+
+def update_env_file(key, value):
+    with open('.env', 'r') as file:
+        lines = file.readlines()
+
+    with open('.env', 'w') as file:
+        for line in lines:
+            if line.startswith(key):
+                line = f'{key}={value}\n'
+            file.write(line)

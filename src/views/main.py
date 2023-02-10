@@ -3,10 +3,10 @@ import time
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtCore
 from UI.ui_main import Ui_MainWindow
-from src.views.accounts import AccountsFormTab
+from src.views.accounts import AccountsFrame
 from src.views.transfers import TransferFrame
-from src.views.transactions import TransactionFrame
-
+from src.views.transactions import TransactionsFrame
+from src.views.wpage import WelcomeFrame
 
 class MainWindow(QMainWindow):
     """Main window class"""
@@ -18,15 +18,17 @@ class MainWindow(QMainWindow):
         self.current_account_id = 0
         self.account_dto = None
 
-        self.accounts_form = AccountsFormTab(self)
+        self.accounts_form = AccountsFrame(self)
         self.ui.stackedWidget.addWidget(self.accounts_form)
         self.transfer_form = TransferFrame(self)
         self.ui.stackedWidget.addWidget(self.transfer_form)
-        self.transactions_form = TransactionFrame(self)
+        self.transactions_form = TransactionsFrame(self, self.accounts_form)
         self.ui.stackedWidget.addWidget(self.transactions_form)
+        self.welcome_form = WelcomeFrame(self)
+        self.ui.stackedWidget.addWidget(self.welcome_form)
 
-
-
+        self.ui.stackedWidget.setCurrentWidget(self.welcome_form)
+        
         self.ui.Btn_Toggle.clicked.connect(lambda: self.toggle_menu(200, True))
 
         self.ui.btn_page_1.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.accounts_form))
