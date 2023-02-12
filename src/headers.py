@@ -12,3 +12,4 @@ def get_headers():
     return headers
 
 headers = get_headers()
+base_url = os.getenv("BASE_URL")

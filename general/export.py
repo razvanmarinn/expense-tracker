@@ -1,7 +1,7 @@
 """This module contains the Exporter class and its subclasses."""
 from abc import ABC, abstractmethod
 from fpdf import FPDF
-from dtos.accounts_dto import AccountDTO
+from src.dtos.accounts_dto import AccountDTO
 
 
 class Exporter(ABC):

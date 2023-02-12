@@ -18,12 +18,12 @@ class MainWindow(QMainWindow):
         self.current_account_id = 0
         self.account_dto = None
 
-        self.accounts_form = AccountsFrame(self)
+        self.welcome_form = WelcomeFrame(self)
+        self.ui.stackedWidget.addWidget(self.welcome_form)
+        self.accounts_form = AccountsFrame(self, self.welcome_form)
         self.ui.stackedWidget.addWidget(self.accounts_form)
         self.transfer_form = TransferFrame(self)
         self.ui.stackedWidget.addWidget(self.transfer_form)
-        self.welcome_form = WelcomeFrame(self)
-        self.ui.stackedWidget.addWidget(self.welcome_form)
         self.transactions_form = TransactionsFrame(self, self.accounts_form,self.welcome_form)
         self.ui.stackedWidget.addWidget(self.transactions_form)
         self.ui.stackedWidget.setCurrentWidget(self.welcome_form)

@@ -4,17 +4,18 @@ from src.views.popup.p_account_info import AccountInfoPopup
 from src.dtos.accounts_dto import AccountDTO
 from general.util import make_api_get_request, make_api_delete_request
 from src.controllers.transactions_controller import TransactionController
-from src.headers import headers
-
+from src.headers import headers,base_url
+from general.export import PdfExport, CsvExport
 
 class AccountsController():
     """Account controller class"""
-    def __init__(self, view):
+    def __init__(self, view, main_page):
         self.view = view
+        self.main_page = main_page
 
     def get_account_data(self, account_id):
         """Get account data"""
-        endpoint_url = "http://{}:{}/accounts/get_account_by_id/{}".format("127.0.0.1", "8000", account_id)
+        endpoint_url = f"{base_url}/accounts/get_account_by_id/{account_id}"
         user_data = make_api_get_request(endpoint_url, headers=headers)
         if "detail" in user_data:
             return None
@@ -24,22 +25,23 @@ class AccountsController():
 
     def get_transactions(self, account_id):
         """Get all transactions for a specific account"""
-        endpoint_url = "http://{}:{}/transactions/get_transactions/{}".format("127.0.0.1", "8000", account_id)
+        endpoint_url = f"{base_url}/transactions/get_transactions/{account_id}"
         return make_api_get_request(endpoint_url, headers=headers)
 
 
     def remove_account(self):
         """Remove an account"""
-        transaction_controller = TransactionController(self.view, self)
+        transaction_controller = TransactionController(self, self.view ,self.main_page)
         transaction_controller.delete_transaction_by_acc_id(self.view.account_dto.account_id)
-        endpoint_url = "http://{}:{}/accounts/delete_account/{}/{}".format("127.0.0.1", "8000", self.view.cb_dropdown.currentText(), self.view.user.id)
+        endpoint_url = f"{base_url}/accounts/delete_account/{self.view.cb_dropdown.currentText()}/{self.view.user.id}"
         make_api_delete_request(endpoint_url, headers=headers)
+        transaction_controller.refresh_transactions() # to be modfiied ( soon)
         self.view.cb_dropdown.removeItem(self.view.cb_dropdown.currentIndex())
 
-    def get_current_account_id(self):# modify into api one
+    def get_current_account_id(self):
         """Get the current account id"""
-        curr_text = self.view.cb_dropdown.currentText() # CURRENT DROPDOWN TEXT
-        endpoint_url = "http://{}:{}/accounts/get_account_id/{}/{}".format("127.0.0.1", "8000", curr_text, self.view.user.id)
+        curr_text = self.view.cb_dropdown.currentText()
+        endpoint_url = f"{base_url}/accounts/get_account_id/{curr_text}/{self.view.user.id}"
         user_data = make_api_get_request(endpoint_url, headers=headers)
         return user_data
 
@@ -51,16 +53,26 @@ class AccountsController():
         """Create a new account info popup"""
         self.view.popup = AccountInfoPopup(self.view)
 
+    def export_to_csv(self):
+        """Export to csv"""
+        csv_export = CsvExport()
+        csv_export.create(self.view.account_dto, "output.csv")
+
+    def export_to_pdf(self):
+        """Export to pdf"""
+        pdf_export = PdfExport()
+        pdf_export.create(self.view.account_dto, "output.pdf")
+
     @staticmethod
     def total_balance_of_a_user(user_id):
         """Get total balance of a user"""
-        endpoint_url = "http://{}:{}/users/get_total_balance/{}".format("127.0.0.1", "8000", user_id)
+        endpoint_url = f"{base_url}/users/get_total_balance/{user_id}"
         user_data = make_api_get_request(endpoint_url, headers=headers)
         return user_data
 
     @staticmethod
     def get_monthly_spendings(user_id, month, year):
         """Get monthly spendings"""
-        endpoint_url = "http://{}:{}/users/get_spending_by_month/{}/{}/{}".format("127.0.0.1", "8000", user_id, month, year)
+        endpoint_url =  f"{base_url}/users/get_spending_by_month/{user_id}/{month}/{year}"
         user_data = make_api_get_request(endpoint_url, headers=headers)
         return user_data

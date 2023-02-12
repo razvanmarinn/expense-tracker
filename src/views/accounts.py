@@ -6,19 +6,20 @@ from PyQt6 import QtGui, QtWidgets
 from UI.accounts2 import Ui_AcccountsFrame
 
 class AccountsFrame(Ui_AcccountsFrame):
-        def __init__(self, parent):
+        def __init__(self, parent, welcome_form):
                 Ui_AcccountsFrame.__init__(self)
                 self.parent = parent
                 self.user = parent.user
+                self.welcome_form = welcome_form
                 self.max_accounts_per_user = 3
                 add_drop_down_items(self.user.id, self)
-                self.controller = AccountsController(self)
+                self.controller = AccountsController(self , self.welcome_form)
                 self.account_dto = self.controller.get_account_data(self.controller.get_current_account_id())
                 self.cb_dropdown.currentIndexChanged.connect(self.set_data)
                 self.pb_addacc.clicked.connect(self.controller.create_account_poup)
                 self.pb_removeacc.clicked.connect(self.controller.remove_account)
                 self.pb_accountinfo.clicked.connect(self.controller.create_account_info_popup)
-
+                self.pb_export.clicked.connect(lambda : (self.controller.export_to_csv(), self.controller.export_to_pdf()))
                 self.retranslateUi(self)
                 self.set_data()
 
