@@ -1,5 +1,4 @@
 """Main window class"""
-import time
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtCore
 from UI.ui_main import Ui_MainWindow
@@ -28,7 +27,7 @@ class MainWindow(QMainWindow):
         self.ui.stackedWidget.addWidget(self.transactions_form)
         self.ui.stackedWidget.setCurrentWidget(self.welcome_form)
 
-        self.ui.Btn_Toggle.clicked.connect(lambda: self.toggle_menu(150, True))
+        self.ui.Btn_Toggle.clicked.connect(lambda: self.toggle_menu(100, True))
         self.ui.btn_page_1.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.welcome_form))
         self.ui.btn_page_7.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.accounts_form))
 
@@ -45,7 +44,6 @@ class MainWindow(QMainWindow):
         """Toggle menu functionality"""
         if enable:
             self.ui.frame_left_menu.show()
-            time.sleep(0.2)
             width = self.ui.frame_left_menu.width()
             maxExtend = maxWidth
             standard = 70

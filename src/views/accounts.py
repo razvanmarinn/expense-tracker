@@ -1,5 +1,5 @@
 """Accounts form GUI functionality / Controller FOR ACCOUNTS """
-from PyQt6 import QtWidgets
+from PyQt6.QtCore import Qt
 from general.util import add_drop_down_items
 from src.controllers.account_controller import AccountsController
 from PyQt6 import QtGui, QtWidgets
@@ -14,6 +14,7 @@ class AccountsFrame(Ui_AcccountsFrame):
                 self.max_accounts_per_user = 3
                 add_drop_down_items(self.user.id, self)
                 self.controller = AccountsController(self , self.welcome_form)
+                self.le_search.textChanged.connect(self.search)
                 self.account_dto = self.controller.get_account_data(self.controller.get_current_account_id())
                 self.cb_dropdown.currentIndexChanged.connect(self.set_data)
                 self.pb_addacc.clicked.connect(self.controller.create_account_poup)
@@ -53,3 +54,18 @@ class AccountsFrame(Ui_AcccountsFrame):
                 except AttributeError:
                         self.l_balance_value.setText("0.0")
                         self.tw_showinfo.setRowCount(0)
+
+        def search(self, search_text):
+                if search_text == "":
+                        self.tw_showinfo.setCurrentItem(None)
+                        return
+                self.tw_showinfo.setCurrentItem(None)
+                matching_items = self.tw_showinfo.findItems(search_text, Qt.MatchFlag.MatchContains)
+                if matching_items:
+                        first_match = matching_items[0]
+                        column_index = first_match.column()
+                        for item in matching_items:
+                                item.setSelected(True)
+                        self.tw_showinfo.sortByColumn(column_index, Qt.SortOrder.DescendingOrder)
+
+

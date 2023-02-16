@@ -1,6 +1,6 @@
 """This module contains the controller for the transactions window"""
 from general.util import  make_api_get_request, make_api_post_request
-from src.headers import headers, base_url
+from general.headers import headers, base_url
 
 
 class TransactionController():

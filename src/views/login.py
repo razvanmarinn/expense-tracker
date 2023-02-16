@@ -10,7 +10,7 @@ class LoginFormWindow(QDialog, Ui_LoginForm):
         self.setupUi(self)
         self.show()
         self.controller = LoginController(self)
+        self.b_login.clicked.connect(self.controller.login)
+        self.b_createacc.clicked.connect(self.controller.sign_up)
 
 
-
-    

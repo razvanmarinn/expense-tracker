@@ -4,7 +4,7 @@ from src.views.popup.p_account_info import AccountInfoPopup
 from src.dtos.accounts_dto import AccountDTO
 from general.util import make_api_get_request, make_api_delete_request
 from src.controllers.transactions_controller import TransactionController
-from src.headers import headers,base_url
+from general.headers import headers,base_url
 from general.export import PdfExport, CsvExport
 
 class AccountsController():
@@ -21,7 +21,7 @@ class AccountsController():
             return None
         else:
             transactions = self.get_transactions(account_id)
-            return AccountDTO(user_data["id"], user_data["uuid"], user_data["balance"], transactions)
+            return AccountDTO(user_data["name"],user_data["id"], user_data["uuid"], user_data["balance"], transactions)
 
     def get_transactions(self, account_id):
         """Get all transactions for a specific account"""
@@ -76,3 +76,5 @@ class AccountsController():
         endpoint_url =  f"{base_url}/users/get_spending_by_month/{user_id}/{month}/{year}"
         user_data = make_api_get_request(endpoint_url, headers=headers)
         return user_data
+
+  

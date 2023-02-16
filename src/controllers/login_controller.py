@@ -5,22 +5,13 @@ from PyQt6.QtWidgets import QMainWindow
 from general.util import make_api_get_request, make_api_post_request, update_env_file
 from src.views.main import MainWindow
 from src.dtos.user_dto import UserDTO
-from src.headers import headers,base_url
+from general.headers import headers,base_url
 
 
 class LoginController():
     """Login controller"""
     def __init__(self, view):
         self.view = view
-        self.view.b_login.clicked.connect(self.login)
-        self.view.b_createacc.clicked.connect(self.sign_up)
-
-        self.conn = psycopg2.connect(
-        database="expense-tracker", user='postgres', password='raz', host='127.0.0.1', port= '5432'
-        )
-        self.cursor = self.conn.cursor()
-        self.conn.autocommit = True
-
 
     def create_user_dto(self, username, user_id):
         """Create a user dto"""
@@ -28,19 +19,23 @@ class LoginController():
         return user_dto
 
     def login(self):
-        endpoint_url = f"{base_url}/user/login/{self.view.le_username.text()}/{self.view.le_password.text()}"
-        user_data = make_api_post_request(endpoint_url, headers=headers)
-        if "detail" in user_data:
-            if user_data["detail"] == "User not found" :
-                self.view.l_loggedin.setText("Username doesn't exist")
-            elif user_data["detail"] == "Wrong password":
-                self.view.l_loggedin.setText("Password is not matching")
-        else:
-            self.view.l_loggedin.setText("Logged in")
-            QtTest.QTest.qWait(500)
-            user_dto = self.create_user_dto(user_data["username"], user_data["id"])
-            update_env_file("API_KEY", user_data["access_token"])
-            self.switch_to_accounts(user_dto)
+        try:
+            endpoint_url = f"{base_url}/user/login/{self.view.le_username.text()}/{self.view.le_password.text()}"
+            user_data = make_api_post_request(endpoint_url, headers=headers)
+            if "detail" in user_data:
+                if user_data["detail"] == "User not found" :
+                    self.view.l_loggedin.setText("Username doesn't exist")
+                elif user_data["detail"] == "Wrong password":
+                    self.view.l_loggedin.setText("Password is not matching")
+            else:
+                self.view.l_loggedin.setText("Logged in")
+                QtTest.QTest.qWait(500)
+                user_dto = self.create_user_dto(user_data["username"], user_data["id"])
+                update_env_file("API_KEY", user_data["access_token"])
+                self.switch_to_accounts(user_dto)
+        except Exception as e:
+            print(e)
+            self.view.l_loggedin.setText("Error")
 
     def sign_up(self):
         """Create the user account and encrypt the password using BCRYPT"""

@@ -1,6 +1,6 @@
 """This module contains general functions that are used in the project"""
 import requests
-from src.headers import headers
+from general.headers import headers
 
 def from_list_to_int(string):
     """Converts components of the  list to an integer"""
@@ -51,7 +51,6 @@ def add_drop_down_items(userid, acc_window):
     """Adds the items to the drop down menu"""
     endpoint_url = "http://{}:{}/accounts/get_accounts_name/{}".format("127.0.0.1", "8000", userid)
     user_data = make_api_get_request(endpoint_url, headers=headers)
-    print(user_data)
     #element = acc_window.account_model.get_name_of_acc(acc_window.user.id) # NAMES OF THE ACCOUNTS
     actual_element = split_into_list(user_data) # ACTUAL_ELEMENT
     if actual_element is not None:

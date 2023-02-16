@@ -4,13 +4,18 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
 from src.controllers.account_controller import AccountsController
 from datetime import datetime
+from general.user_avatar import AvatarHandler
 
 class WelcomeFrame(Ui_WelcomeFrame):
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
+        self.SPENDING_THREESHOLD = 10000
+        self.avatar_handler = AvatarHandler(self)
+        self.avatar_handler.get_avatar_from_database()
         self.l_username.setText(self.parent.user.username)
-        self.pb_addphoto.clicked.connect(self.open_avatar)
+        self.pb_addphoto.clicked.connect(self.avatar_handler.open_avatar)
+
         try:
             self.get_total_balance()
             self.get_this_month_spending()
@@ -22,15 +27,9 @@ class WelcomeFrame(Ui_WelcomeFrame):
         total_balance = AccountsController.total_balance_of_a_user(self.parent.user.id)
         self.l_totalbalance.setText(str(total_balance))
 
-    def get_this_month_spending(self):
+    def get_this_month_spending(self): # implement sending emails when spending is over the threeshold and stop the user from transfers.
         spending = AccountsController.get_monthly_spendings(self.parent.user.id, datetime.now().month, datetime.now().year)
+        if spending > self.SPENDING_THREESHOLD:
+            self.l_totalspend.setStyleSheet("color: red")
         self.l_totalspend.setText(str(spending))
-
-
-    def open_avatar(self):
-        fname = QFileDialog.getOpenFileName(self.parent, 'Open file', 'c:\\', "Image files (*.jpg *.gif)")
-        if fname[0]:
-
-            self.pixmap = QPixmap(fname[0]).scaled(self.l_photo.width(), self.l_photo.height(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
-            self.l_photo.setPixmap(self.pixmap)
 
