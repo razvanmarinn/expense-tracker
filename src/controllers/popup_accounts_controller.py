@@ -1,7 +1,7 @@
 """This module contains the controller for the popup window for creating new accounts"""
-from src.dtos.transactions_dto import TransactionDTO
 from general.util import make_api_post_request, make_api_get_request
 from general.headers import headers, base_url
+
 
 class PopUpAccountsController():
     """This class contains the controller for the popup window for creating new accounts"""

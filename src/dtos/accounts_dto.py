@@ -1,14 +1,15 @@
 """Account DTO"""""
 from src.dtos.transactions_dto import TransactionDTO
+
+
 class AccountDTO:
     """Account Data Transfer Object class"""
-    def __init__(self, name: str, account_id: int, account_uuid: str ,balance: int, transactions: list[TransactionDTO]):
+    def __init__(self, name: str, account_id: int, account_uuid: str, balance: int, transactions: list[TransactionDTO]):
         self.name = name
         self.account_id = account_id
         self.account_uuid = account_uuid
         self.balance = balance
         self.transactions = transactions
-
 
     def __str__(self):
         """String representation of the AccountDTO class"""

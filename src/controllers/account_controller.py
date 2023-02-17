@@ -2,10 +2,11 @@
 from src.views.popup.p_accounts import PopUpWindowAcc
 from src.views.popup.p_account_info import AccountInfoPopup
 from src.dtos.accounts_dto import AccountDTO
-from general.util import make_api_get_request, make_api_delete_request
 from src.controllers.transactions_controller import TransactionController
-from general.headers import headers,base_url
+from general.util import make_api_get_request, make_api_delete_request
+from general.headers import headers, base_url
 from general.export import PdfExport, CsvExport
+
 
 class AccountsController():
     """Account controller class"""
@@ -19,23 +20,21 @@ class AccountsController():
         user_data = make_api_get_request(endpoint_url, headers=headers)
         if "detail" in user_data:
             return None
-        else:
-            transactions = self.get_transactions(account_id)
-            return AccountDTO(user_data["name"],user_data["id"], user_data["uuid"], user_data["balance"], transactions)
+        transactions = self.get_transactions(account_id)
+        return AccountDTO(user_data["name"], user_data["id"], user_data["uuid"], user_data["balance"], transactions)
 
     def get_transactions(self, account_id):
         """Get all transactions for a specific account"""
         endpoint_url = f"{base_url}/transactions/get_transactions/{account_id}"
         return make_api_get_request(endpoint_url, headers=headers)
 
-
     def remove_account(self):
         """Remove an account"""
-        transaction_controller = TransactionController(self, self.view ,self.main_page)
+        transaction_controller = TransactionController(self, self.view, self.main_page)
         transaction_controller.delete_transaction_by_acc_id(self.view.account_dto.account_id)
         endpoint_url = f"{base_url}/accounts/delete_account/{self.view.cb_dropdown.currentText()}/{self.view.user.id}"
         make_api_delete_request(endpoint_url, headers=headers)
-        transaction_controller.refresh_transactions() # to be modfiied ( soon)
+        transaction_controller.refresh_transactions()  # to be modfiied (soon)
         self.view.cb_dropdown.removeItem(self.view.cb_dropdown.currentIndex())
 
     def get_current_account_id(self):
@@ -73,8 +72,6 @@ class AccountsController():
     @staticmethod
     def get_monthly_spendings(user_id, month, year):
         """Get monthly spendings"""
-        endpoint_url =  f"{base_url}/users/get_spending_by_month/{user_id}/{month}/{year}"
+        endpoint_url = f"{base_url}/users/get_spending_by_month/{user_id}/{month}/{year}"
         user_data = make_api_get_request(endpoint_url, headers=headers)
         return user_data
-
-  

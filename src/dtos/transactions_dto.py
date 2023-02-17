@@ -1,5 +1,6 @@
 """Transaction DTO class"""
 
+
 class TransactionDTO:
     """Transaction Data Transfer Object class"""
     def __init__(self, transaction):

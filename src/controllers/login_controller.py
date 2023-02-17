@@ -1,11 +1,10 @@
 """Login controller"""
-import psycopg2
 from PyQt6 import QtTest
 from PyQt6.QtWidgets import QMainWindow
 from general.util import make_api_get_request, make_api_post_request, update_env_file
+from general.headers import headers, base_url
 from src.views.main import MainWindow
 from src.dtos.user_dto import UserDTO
-from general.headers import headers,base_url
 
 
 class LoginController():
@@ -19,11 +18,12 @@ class LoginController():
         return user_dto
 
     def login(self):
+        """Login the user"""
         try:
             endpoint_url = f"{base_url}/user/login/{self.view.le_username.text()}/{self.view.le_password.text()}"
             user_data = make_api_post_request(endpoint_url, headers=headers)
             if "detail" in user_data:
-                if user_data["detail"] == "User not found" :
+                if user_data["detail"] == "User not found":
                     self.view.l_loggedin.setText("Username doesn't exist")
                 elif user_data["detail"] == "Wrong password":
                     self.view.l_loggedin.setText("Password is not matching")
@@ -33,8 +33,8 @@ class LoginController():
                 user_dto = self.create_user_dto(user_data["username"], user_data["id"])
                 update_env_file("API_KEY", user_data["access_token"])
                 self.switch_to_accounts(user_dto)
-        except Exception as e:
-            print(e)
+        except Exception as exception_thrown:
+            print(exception_thrown)
             self.view.l_loggedin.setText("Error")
 
     def sign_up(self):
@@ -48,9 +48,8 @@ class LoginController():
         user_data = make_api_post_request(endpoint_url, headers=headers)
         self.view.l_loggedin.setText("Account created")
 
-
     def switch_to_accounts(self, user: UserDTO):
         """Switch to accounts tab"""
-        self.window= QMainWindow()
-        self.ui_accounts = MainWindow(user)
+        QMainWindow()
+        MainWindow(user)
         self.view.hide()

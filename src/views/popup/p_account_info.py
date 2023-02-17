@@ -2,6 +2,7 @@
 from PyQt6.QtWidgets import QDialog
 from UI.info import Ui_Form
 
+
 class AccountInfoPopup(QDialog, Ui_Form):
     """Account info popup class"""
     def __init__(self, acc_window):
