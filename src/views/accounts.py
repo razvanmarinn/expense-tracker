@@ -67,4 +67,4 @@ class AccountsFrame(Ui_AcccountsFrame):
             column_index = first_match.column()
             for item in matching_items:
                 item.setSelected(True)
-        self.tw_showinfo.sortByColumn(column_index, Qt.SortOrder.DescendingOrder)
+            self.tw_showinfo.sortByColumn(column_index, Qt.SortOrder.AscendingOrder)
