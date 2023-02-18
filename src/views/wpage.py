@@ -16,6 +16,7 @@ class WelcomeFrame(Ui_WelcomeFrame):
         self.l_username.setText(self.parent.user.username)
         self.pb_addphoto.clicked.connect(self.avatar_handler.open_avatar)
         self.l_fullname.setText(self.get_fullname())
+        self.l_email.setText(self.get_email())
         try:
             self.get_total_balance()
             self.get_this_month_spending()
@@ -36,5 +37,11 @@ class WelcomeFrame(Ui_WelcomeFrame):
         self.l_totalspend.setText(str(spending))
 
     def get_fullname(self):
+        """Get fullname of the user"""
         fullname = AccountsController.get_details_of_user(self.parent.user.id)
         return fullname[1]
+
+    def get_email(self):
+        """Get email of the user"""
+        email = AccountsController.get_details_of_user(self.parent.user.id)
+        return email[2]
