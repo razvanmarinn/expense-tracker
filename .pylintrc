@@ -1,2 +1,4 @@
 [MASTER]
 extension-pkg-whitelist=PyQt6
+[FORMAT]
+max-line-length=240

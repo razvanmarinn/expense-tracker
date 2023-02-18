@@ -2,6 +2,7 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtCore
 from UI.ui_main import Ui_MainWindow
+from src.views.user_details import UserDetailsFrame
 from src.views.accounts import AccountsFrame
 from src.views.transfers import TransferFrame
 from src.views.transactions import TransactionsFrame
@@ -26,6 +27,8 @@ class MainWindow(QMainWindow):
         self.ui.stackedWidget.addWidget(self.transfer_form)
         self.transactions_form = TransactionsFrame(self, self.accounts_form, self.welcome_form)
         self.ui.stackedWidget.addWidget(self.transactions_form)
+        self.user_details_form = UserDetailsFrame(self.accounts_form)
+        self.ui.stackedWidget.addWidget(self.user_details_form)
         self.ui.stackedWidget.setCurrentWidget(self.welcome_form)
 
         self.ui.Btn_Toggle.clicked.connect(lambda: self.toggle_menu(100, True))
@@ -33,7 +36,7 @@ class MainWindow(QMainWindow):
         self.ui.btn_page_7.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.accounts_form))
         self.ui.btn_page_2.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.transactions_form))
         self.ui.btn_page_3.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.transfer_form))
-        self.ui.btn_page_6.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_4))
+        self.ui.btn_page_6.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.user_details_form))
 
         self.show()
 

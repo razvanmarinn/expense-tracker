@@ -78,6 +78,12 @@ def make_api_delete_request(endpoint_url, headers):
     return "OK"
 
 
+def make_api_put_request(endpoint_url, headers):
+    """Makes an api request"""
+    response = requests.put(endpoint_url, headers=headers)
+    return response.json()
+
+
 def update_env_file(key, value):
     """Updates the .env file"""
     with open('.env', 'r') as file:

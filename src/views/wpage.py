@@ -15,6 +15,7 @@ class WelcomeFrame(Ui_WelcomeFrame):
         self.avatar_handler.get_avatar_from_database()
         self.l_username.setText(self.parent.user.username)
         self.pb_addphoto.clicked.connect(self.avatar_handler.open_avatar)
+        self.l_fullname.setText(self.get_fullname())
         try:
             self.get_total_balance()
             self.get_this_month_spending()
@@ -33,3 +34,7 @@ class WelcomeFrame(Ui_WelcomeFrame):
         if spending > self.spending_threeshold:
             self.l_totalspend.setStyleSheet("color: red")
         self.l_totalspend.setText(str(spending))
+
+    def get_fullname(self):
+        fullname = AccountsController.get_details_of_user(self.parent.user.id)
+        return fullname[1]

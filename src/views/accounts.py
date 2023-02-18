@@ -7,13 +7,14 @@ from UI.accounts2 import Ui_AcccountsFrame
 
 
 class AccountsFrame(Ui_AcccountsFrame):
+    max_accounts_per_user = 3
+
     """Accounts Frame"""
     def __init__(self, parent, welcome_form):
         Ui_AcccountsFrame.__init__(self)
         self.parent = parent
         self.user = parent.user
         self.welcome_form = welcome_form
-        self.max_accounts_per_user = 3
         add_drop_down_items(self.user.id, self)
         self.controller = AccountsController(self, self.welcome_form)
         self.le_search.textChanged.connect(self.search)
@@ -48,9 +49,9 @@ class AccountsFrame(Ui_AcccountsFrame):
                     value_tabel.setForeground(QtGui.QBrush(QtGui.QColor(255, 0, 0)))
                 else:
                     value_tabel.setForeground(QtGui.QBrush(QtGui.QColor(0, 255, 0)))
-                    self.tw_showinfo.setItem(row, 2, value_tabel)
-                    self.tw_showinfo.setItem(row, 3, date_tabel)
-                    self.tw_showinfo.setItem(row, 4, type_tabel)
+                self.tw_showinfo.setItem(row, 2, value_tabel)
+                self.tw_showinfo.setItem(row, 3, date_tabel)
+                self.tw_showinfo.setItem(row, 4, type_tabel)
         except AttributeError:
             self.l_balance_value.setText("0.0")
             self.tw_showinfo.setRowCount(0)

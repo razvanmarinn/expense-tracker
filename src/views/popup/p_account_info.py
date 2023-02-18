@@ -10,6 +10,9 @@ class AccountInfoPopup(QDialog, Ui_Form):
         self.setupUi(self, acc_window)
         self.acc_window = acc_window
         self.show()
-
-        self.l_iban.setText(self.acc_window.account_dto.account_uuid)
-        self.l_accountid.setText(str(self.acc_window.account_dto.account_id))
+        try:
+            self.l_iban.setText(self.acc_window.account_dto.account_uuid)
+            self.l_accountid.setText(str(self.acc_window.account_dto.account_id))
+        except AttributeError:
+            self.l_iban.setText("No account selected")
+            self.l_accountid.setText("No account selected")

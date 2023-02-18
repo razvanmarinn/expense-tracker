@@ -75,3 +75,10 @@ class AccountsController():
         endpoint_url = f"{base_url}/users/get_spending_by_month/{user_id}/{month}/{year}"
         user_data = make_api_get_request(endpoint_url, headers=headers)
         return user_data
+
+    @staticmethod
+    def get_details_of_user(user_id):
+        """Get details of a user"""
+        endpoint_url = f"{base_url}/user/get_user_details/{user_id}"
+        user_data = make_api_get_request(endpoint_url, headers=headers)
+        return user_data

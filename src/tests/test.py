@@ -1,11 +1,13 @@
 """Test module for the application."""
 import os
+import pytest
 from pathlib import Path
 from unittest.mock import MagicMock
-import pytest
 from general.export import PdfExport, CsvExport
 from src.dtos.accounts_dto import AccountDTO
 from src.controllers.login_controller import LoginController
+from general.util import make_api_get_request
+from general.headers import headers, base_url
 
 
 @pytest.fixture
@@ -46,3 +48,8 @@ def test_csv_exporter_with_wrong_path(account_dto):
     path = Path('./tesht.csv')
     assert path.is_file() is False
     os.remove("test.csv")
+
+
+def test_api_call():
+    """Test the api call"""
+    assert make_api_get_request(f"{base_url}/", headers=headers) == "Hello World"
