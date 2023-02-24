@@ -17,6 +17,7 @@ class WelcomeFrame(Ui_WelcomeFrame):
         self.pb_addphoto.clicked.connect(self.avatar_handler.open_avatar)
         self.l_fullname.setText(self.get_fullname())
         self.l_email.setText(self.get_email())
+
         try:
             self.get_total_balance()
             self.get_this_month_spending()

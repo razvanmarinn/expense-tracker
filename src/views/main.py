@@ -9,6 +9,7 @@ from src.views.transfers import TransferFrame
 from src.views.transactions import TransactionsFrame
 from src.views.wpage import WelcomeFrame
 from src.views.insights import InsightsFrame
+from general.refresh import Refresh
 
 
 class MainWindow(QMainWindow):
@@ -25,16 +26,22 @@ class MainWindow(QMainWindow):
 
         self.welcome_form = WelcomeFrame(self)
         self.ui.stackedWidget.addWidget(self.welcome_form)
-        self.accounts_form = AccountsFrame(self, self.welcome_form)
+
+        self.accounts_form = AccountsFrame(self, self.welcome_form, Refresh(self))
         self.ui.stackedWidget.addWidget(self.accounts_form)
+
         self.transfer_form = TransferFrame(self)
         self.ui.stackedWidget.addWidget(self.transfer_form)
-        self.transactions_form = TransactionsFrame(self, self.accounts_form, self.welcome_form)
-        self.ui.stackedWidget.addWidget(self.transactions_form)
-        self.user_details_form = UserDetailsFrame(self.welcome_form)
-        self.ui.stackedWidget.addWidget(self.user_details_form)
+
         self.insights_form = InsightsFrame(self)
         self.ui.stackedWidget.addWidget(self.insights_form)
+
+        self.transactions_form = TransactionsFrame(self, Refresh(self))
+        self.ui.stackedWidget.addWidget(self.transactions_form)
+
+        self.user_details_form = UserDetailsFrame(self.welcome_form)
+        self.ui.stackedWidget.addWidget(self.user_details_form)
+
         self.ui.stackedWidget.setCurrentWidget(self.welcome_form)
 
         self.welcome_form.pb_modify_details.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.user_details_form))  # push button in welcomeframe

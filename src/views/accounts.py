@@ -7,16 +7,16 @@ from UI.accounts2 import Ui_AcccountsFrame
 
 
 class AccountsFrame(Ui_AcccountsFrame):
+    """Accounts Frame"""
     max_accounts_per_user = 3
 
-    """Accounts Frame"""
-    def __init__(self, parent, welcome_form):
+    def __init__(self, parent, welcome_form, refresher):
         Ui_AcccountsFrame.__init__(self)
         self.parent = parent
         self.user = parent.user
         self.welcome_form = welcome_form
         add_drop_down_items(self.user.id, self)
-        self.controller = AccountsController(self, self.welcome_form)
+        self.controller = AccountsController(self, self.welcome_form, refresher)
         self.le_search.textChanged.connect(self.search)
         self.account_dto = self.controller.get_account_data(self.controller.get_current_account_id())
         self.cb_dropdown.currentIndexChanged.connect(self.set_data)

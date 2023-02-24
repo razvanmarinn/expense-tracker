@@ -10,9 +10,10 @@ from general.export import PdfExport, CsvExport
 
 class AccountsController():
     """Account controller class"""
-    def __init__(self, view, main_page):
+    def __init__(self, view, main_page, refresher):
         self.view = view
         self.main_page = main_page
+        self.refresher = refresher
 
     def get_account_data(self, account_id):
         """Get account data"""
@@ -30,11 +31,10 @@ class AccountsController():
 
     def remove_account(self):
         """Remove an account"""
-        transaction_controller = TransactionController(self, self.view, self.main_page)
-        transaction_controller.delete_transaction_by_acc_id(self.view.account_dto.account_id)
+        TransactionController.delete_transaction_by_acc_id(self.view.account_dto.account_id)
         endpoint_url = f"{base_url}/accounts/delete_account/{self.view.cb_dropdown.currentText()}/{self.view.user.id}"
         make_api_delete_request(endpoint_url, headers=headers)
-        transaction_controller.refresh_transactions()  # to be modfiied (soon)
+        self.refresher.refresh()  # refresh the info when an account is deleted
         self.view.cb_dropdown.removeItem(self.view.cb_dropdown.currentIndex())
 
     def get_current_account_id(self):
