@@ -5,7 +5,7 @@ from src.dtos.accounts_dto import AccountDTO
 from src.controllers.transactions_controller import TransactionController
 from general.util import make_api_get_request, make_api_delete_request
 from general.headers import headers, base_url
-from general.export import PdfExport, CsvExport
+from general.export import Exporter
 
 
 class AccountsController():
@@ -52,15 +52,9 @@ class AccountsController():
         """Create a new account info popup"""
         self.view.popup = AccountInfoPopup(self.view)
 
-    def export_to_csv(self):
-        """Export to csv"""
-        csv_export = CsvExport()
-        csv_export.create(self.view.account_dto, "output.csv")
-
-    def export_to_pdf(self):
+    def export_file(self, exporter: Exporter, path):
         """Export to pdf"""
-        pdf_export = PdfExport()
-        pdf_export.create(self.view.account_dto, "output.pdf")
+        exporter.create(self.view.account_dto, path)
 
     @staticmethod
     def total_balance_of_a_user(user_id):

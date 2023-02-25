@@ -4,6 +4,7 @@ from PyQt6.QtCore import Qt
 from general.util import add_drop_down_items
 from src.controllers.account_controller import AccountsController
 from UI.accounts2 import Ui_AcccountsFrame
+from general.export import PdfExport, CsvExport
 
 
 class AccountsFrame(Ui_AcccountsFrame):
@@ -23,7 +24,7 @@ class AccountsFrame(Ui_AcccountsFrame):
         self.pb_addacc.clicked.connect(self.controller.create_account_poup)
         self.pb_removeacc.clicked.connect(self.controller.remove_account)
         self.pb_accountinfo.clicked.connect(self.controller.create_account_info_popup)
-        self.pb_export.clicked.connect(lambda: (self.controller.export_to_csv(), self.controller.export_to_pdf()))
+        self.pb_export.clicked.connect(lambda: (self.controller.export_file(PdfExport(), "output/summary.pdf"), self.controller.export_file(CsvExport(), "output/summary.csv")))
         self.retranslateUi(self)
         self.set_data()
 

@@ -7,10 +7,11 @@ from general.user_avatar import AvatarHandler
 
 class WelcomeFrame(Ui_WelcomeFrame):
     """Welcome Frame class"""
+    spending_threeshold = 10000
+
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
-        self.spending_threeshold = 10000
         self.avatar_handler = AvatarHandler(self)
         self.avatar_handler.get_avatar_from_database()
         self.l_username.setText(self.parent.user.username)
