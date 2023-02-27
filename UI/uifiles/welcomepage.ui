@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WelcomeFrame</class>
+ <widget class="QFrame" name="WelcomeFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>936</width>
+    <height>478</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>OCR A Extended</family>
+    <pointsize>16</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(35,35,35)</string>
+  </property>
+  <widget class="QLabel" name="l_hello">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>60</y>
+     <width>81</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
+   <property name="text">
+    <string>Hello,</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_username">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>60</y>
+     <width>151</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
+   <property name="text">
+    <string>Username</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_totalspend_month">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>330</y>
+     <width>281</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
+   <property name="text">
+    <string>Total spend this month:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_totalspend">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>330</y>
+     <width>134</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
+   <property name="text">
+    <string>value</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_totalbalance">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>270</y>
+     <width>134</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
+   <property name="text">
+    <string>value</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_balance_of_accounts">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>270</y>
+     <width>291</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
+   <property name="text">
+    <string>Balance of all accounts:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_photo">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>50</y>
+     <width>161</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">margin: 10%;
+     border: 4px solid rgba(0, 0, 0, .4);
+            border-radius: 5px;
+background-color : #fff</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_addphoto">
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>190</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color : rgba(255,255,255,0.5)</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>C:/Users/User/Downloads/user.png</normaloff>C:/Users/User/Downloads/user.png</iconset>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_fullname">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>250</y>
+     <width>211</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
+   <property name="text">
+    <string>Fullname</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_email">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>320</y>
+     <width>211</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff</string>
+   </property>
+   <property name="text">
+    <string>Email</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_modify_details">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>410</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#228be6;
+color: #fff</string>
+   </property>
+   <property name="text">
+    <string>Modify details</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

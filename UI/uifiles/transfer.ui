@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TransferFrame</class>
+ <widget class="QFrame" name="TransferFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>936</width>
+    <height>478</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>OCR A Extended</family>
+    <pointsize>16</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(35,35,35)</string>
+  </property>
+  <widget class="QPushButton" name="pb_createtransfer">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>310</y>
+     <width>221</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#228be6;
+color: #fff
+</string>
+   </property>
+   <property name="text">
+    <string>Send transfer</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>110</y>
+     <width>446</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>7</number>
+    </property>
+    <property name="rightMargin">
+     <number>19</number>
+    </property>
+    <property name="bottomMargin">
+     <number>2</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="l_username">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff;</string>
+        </property>
+        <property name="text">
+         <string>Username</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="l_value">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff;</string>
+        </property>
+        <property name="text">
+         <string>Value</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="l_description">
+          <property name="font">
+           <font>
+            <family>OCR A Extended</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color : #fff;</string>
+          </property>
+          <property name="text">
+           <string>Description</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLineEdit" name="le_username">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>Enter username</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_value">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff</string>
+        </property>
+        <property name="placeholderText">
+         <string>Enter value</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_description">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff</string>
+        </property>
+        <property name="placeholderText">
+         <string>Short description</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

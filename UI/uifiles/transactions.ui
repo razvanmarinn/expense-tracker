@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TransactionFrame</class>
+ <widget class="QFrame" name="TransactionFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>936</width>
+    <height>478</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>OCR A Extended</family>
+    <pointsize>16</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(35,35,35)</string>
+  </property>
+  <widget class="QPushButton" name="pb_addtransaction">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>310</y>
+     <width>221</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#228be6;
+color: #fff
+</string>
+   </property>
+   <property name="text">
+    <string>Add transaction</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>100</y>
+     <width>446</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>7</number>
+    </property>
+    <property name="rightMargin">
+     <number>19</number>
+    </property>
+    <property name="bottomMargin">
+     <number>2</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="l_nume">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff;</string>
+        </property>
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="l_value">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff;</string>
+        </property>
+        <property name="text">
+         <string>Value</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="l_value_2">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff;</string>
+        </property>
+        <property name="text">
+         <string>Type</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLineEdit" name="le_nume">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>Transaction name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_value">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff</string>
+        </property>
+        <property name="placeholderText">
+         <string>Enter budget</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cb_typeoftacc">
+        <property name="styleSheet">
+         <string notr="true">background-color: #fff</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

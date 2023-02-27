@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TransferFrame</class>
+ <widget class="QFrame" name="TransferFrame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>936</width>
+    <height>478</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>OCR A Extended</family>
+    <pointsize>16</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(35,35,35)</string>
+  </property>
+  <widget class="QLabel" name="l_estimated_next_month_spending">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>370</y>
+     <width>371</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff;</string>
+   </property>
+   <property name="text">
+    <string>Estimated next month spendings:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="l_value_next_month_sp">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>370</y>
+     <width>81</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>OCR A Extended</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color : #fff;</string>
+   </property>
+   <property name="text">
+    <string>value</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="widget_2" native="true">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>80</y>
+     <width>501</width>
+     <height>221</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
