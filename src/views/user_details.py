@@ -2,7 +2,7 @@
 from PyQt6 import QtTest
 from PyQt6.QtWidgets import QMessageBox
 from UI.user_details import Ui_UserDetailsFrame
-from general.util import make_api_put_request
+from general.util import make_api_put_request, check_email_format, check_phone_number_format
 from general.headers import headers, base_url
 
 
@@ -11,11 +11,17 @@ class UserDetailsFrame(Ui_UserDetailsFrame):
     def __init__(self, acc_window):
         super().__init__()
         self.acc_window = acc_window
-        self.pb_modify_user_details.clicked.connect(lambda: self.modify_user_details())
+        self.pb_modify_user_details.clicked.connect(self.modify_user_details)
 
     def modify_user_details(self):
         """Modify user details"""
         try:
+            if check_email_format(self.le_email.text()) is False:
+                QMessageBox.critical(self, "Error", "Invalid email format", QMessageBox.StandardButton.Ok)
+                return
+            if check_phone_number_format(self.le_phonenumber.text()) is False:
+                QMessageBox.critical(self, "Error", "Invalid phone number format", QMessageBox.StandardButton.Ok)
+                return
             endpoint_url = f"{base_url}/user/update_user_details/{self.acc_window.parent.user.id}/{self.le_fullname.text()}/{self.le_email.text()}/{self.le_phonenumber.text()}"
             response = make_api_put_request(endpoint_url, headers=headers)
             QMessageBox.information(self, "Success", "User details updated successfully", QMessageBox.StandardButton.Ok)
@@ -27,3 +33,4 @@ class UserDetailsFrame(Ui_UserDetailsFrame):
         except Exception as exception_error:
             QMessageBox.critical(self, "Error", "An error occurred while updating user details", QMessageBox.StandardButton.Ok)
             print(exception_error)
+            return

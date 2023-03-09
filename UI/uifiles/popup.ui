@@ -6,21 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>331</width>
-    <height>178</height>
+    <width>509</width>
+    <height>407</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Account add</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #adb5bd</string>
+   <string notr="true">background-color: rgb(35,35,35)</string>
   </property>
   <widget class="QPushButton" name="pb_add">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>130</y>
+     <x>220</x>
+     <y>340</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -39,72 +39,138 @@ color: #fff
     <string>Add</string>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>90</y>
-     <width>201</width>
-     <height>24</height>
+     <x>90</x>
+     <y>70</y>
+     <width>321</width>
+     <height>171</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="label_budget">
-      <property name="font">
-       <font>
-        <family>OCR A Extended</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>Budget</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_accountname">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff;</string>
+        </property>
+        <property name="text">
+         <string>Account name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cb_accountnames">
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff;
+border : no-border;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Current</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Savings</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Business</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Investment</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QLineEdit" name="le_budgetname">
-      <property name="styleSheet">
-       <string notr="true">background-color : #fff</string>
-      </property>
-      <property name="placeholderText">
-       <string>Enter budget</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>50</y>
-     <width>271</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QLabel" name="label_accountname">
-      <property name="font">
-       <font>
-        <family>OCR A Extended</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>Account name</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_budget">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff;</string>
+        </property>
+        <property name="text">
+         <string>Budget</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_budgetname">
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff</string>
+        </property>
+        <property name="placeholderText">
+         <string>Enter budget</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QLineEdit" name="le_accountname">
-      <property name="styleSheet">
-       <string notr="true">background-color : #fff
-</string>
-      </property>
-      <property name="placeholderText">
-       <string>Enter name of account</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="l_currency">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff</string>
+        </property>
+        <property name="text">
+         <string>Currency</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cb_currency">
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff;
+border : no-border;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>RON</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>EUR</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>GBP</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>USD</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

@@ -19,7 +19,6 @@ class LoginController():
 
     def login(self):
         """Login the user"""
-        # try:
         endpoint_url = f"{base_url}/user/login/{self.view.le_username.text()}/{self.view.le_password.text()}"
         user_data = make_api_post_request(endpoint_url, headers=headers)
         if "detail" in user_data:
@@ -29,13 +28,10 @@ class LoginController():
                 self.view.l_loggedin.setText("Password is not matching")
         else:
             self.view.l_loggedin.setText("Logged in")
-            QtTest.QTest.qWait(500)
+            QtTest.QTest.qWait(350)
             user_dto = self.create_user_dto(user_data["username"], user_data["id"])
             update_env_file("API_KEY", user_data["access_token"])
             self.switch_to_accounts(user_dto)
-        # except Exception as exception_thrown:
-        #     print(exception_thrown)
-        #     self.view.l_loggedin.setText("Error")
 
     def sign_up(self):
         """Create the user account and encrypt the password using BCRYPT"""

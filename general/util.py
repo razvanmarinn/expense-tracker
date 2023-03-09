@@ -62,35 +62,50 @@ def add_drop_down_items(userid, acc_window):
 
 def make_api_get_request(endpoint_url, headers):
     """Makes an api request"""
-    response = requests.get(endpoint_url, headers=headers)
+    response = requests.get(endpoint_url, headers=headers, timeout=600)
     return response.json()
 
 
 def make_api_post_request(endpoint_url, headers):
     """Makes an api request"""
-    response = requests.post(endpoint_url, headers=headers)
+    response = requests.post(endpoint_url, headers=headers, timeout=600)
     return response.json()
 
 
 def make_api_delete_request(endpoint_url, headers):
     """Makes an api request"""
-    requests.delete(endpoint_url, headers=headers)
+    requests.delete(endpoint_url, headers=headers, timeout=600)
     return "OK"
 
 
 def make_api_put_request(endpoint_url, headers):
     """Makes an api request"""
-    response = requests.put(endpoint_url, headers=headers)
+    response = requests.put(endpoint_url, headers=headers, timeout=600)
     return response.json()
 
 
 def update_env_file(key, value):
     """Updates the .env file"""
-    with open('.env', 'r') as file:
+    with open('.env', 'r', encoding=None) as file:
         lines = file.readlines()
 
-    with open('.env', 'w') as file:
+    with open('.env', 'w', encoding=None) as file:
         for line in lines:
             if line.startswith(key):
                 line = f'{key}={value}\n'
             file.write(line)
+
+
+def check_email_format(email: str):
+    """Checks if the email is valid"""
+    assert email.count("@") == 1, "Email must contain only one @ sign"
+    assert email.count(".") >= 1, "Email must contain at least one dot"
+    assert email.index("@") < email.index("."), "Email must contain a dot after the @ sign"
+    return True
+
+
+def check_phone_number_format(phone_number: str):
+    """Checks if the phone number is valid"""
+    assert len(phone_number) == 10, "Phone number must be 10 digits long"
+    assert phone_number.isnumeric(), "Phone number must contain only digits"
+    return True
