@@ -22,7 +22,7 @@ class AccountsController():
         if "detail" in user_data:
             return None
         transactions = self.get_transactions(account_id)
-        return AccountDTO(user_data["name"], user_data["id"], user_data["uuid"], user_data["balance"], transactions)
+        return AccountDTO(user_data["name"], user_data["id"], user_data["uuid"], user_data["balance"], user_data["currency"], transactions)
 
     def get_transactions(self, account_id):
         """Get all transactions for a specific account"""
@@ -46,7 +46,7 @@ class AccountsController():
 
     def create_account_poup(self):
         """Create a new account popup"""
-        self.view.popup = PopUpWindowAcc(self.view)
+        self.view.popup = PopUpWindowAcc(self.view, self.refresher)
 
     def create_account_info_popup(self):
         """Create a new account info popup"""

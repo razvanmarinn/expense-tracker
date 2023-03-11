@@ -33,4 +33,4 @@ class NextMonthPredicter(Predicter):
         model_fit = model.fit()
         prediction = model_fit.forecast(steps=1, exog=None)[0]
         predicted_spending = prediction + baseline_spending  # noqa: F841
-        return predicted_spending
+        return round(predicted_spending, 2)

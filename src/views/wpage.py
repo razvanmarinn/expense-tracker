@@ -29,14 +29,14 @@ class WelcomeFrame(Ui_WelcomeFrame):
     def get_total_balance(self):
         """Get total balance of all accounts"""
         total_balance = AccountsController.total_balance_of_a_user(self.parent.user.id)
-        self.l_totalbalance.setText(str(total_balance))
+        self.l_totalbalance.setText(str(total_balance) + " € ")
 
     def get_this_month_spending(self):  # implement sending emails when spending is over the threeshold and stop the user from transfers.
         """Get total spending of this month"""
         spending = AccountsController.get_monthly_spendings(self.parent.user.id, datetime.now().month, datetime.now().year)
         if spending > self.spending_threeshold:
             self.l_totalspend.setStyleSheet("color: red")
-        self.l_totalspend.setText(str(spending))
+        self.l_totalspend.setText(str(spending) + " € ")
 
     def get_fullname(self):
         """Get fullname of the user"""

@@ -36,7 +36,7 @@ class AccountsFrame(Ui_AcccountsFrame):
         self.parent.account_dto = self.account_dto
 
         try:
-            self.l_balance_value.setText(str(self.account_dto.balance))
+            self.l_balance_value.setText(str(self.account_dto.balance) + " " + self.account_dto.currency)
             self.tw_showinfo.setRowCount(len(self.account_dto.transactions))
             for row, transaction in enumerate(self.account_dto.transactions):
                 id_tabel = QtWidgets.QTableWidgetItem(str(transaction[0]))

@@ -1,6 +1,5 @@
 """Insights Controller"""
 from datetime import datetime
-
 from general.headers import headers, base_url
 from general.util import make_api_get_request
 from general.next_month_spending import NextMonthPredicter
@@ -21,6 +20,6 @@ class InsightsController:
         """Get next month spending"""
         next_month_predicter = NextMonthPredicter(datetime.now().year)
         try:
-            self.view.l_value_next_month_sp.setText(str(next_month_predicter.predict(self.parent.user.id)))
+            self.view.l_value_next_month_sp.setText(str(next_month_predicter.predict(self.parent.user.id)) + " € ")
         except Exception:
             self.view.l_value_next_month_sp.setText("Error")

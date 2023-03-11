@@ -11,7 +11,7 @@ class TransactionController():
 
     def create_transaction(self):
         """This function creates a transaction"""
-        endpoint_url = f"{base_url}/transactions/create_transaction/{self.view.le_nume.text()}/{self.view.le_value.text()}/{self.view.cb_typeoftacc.currentText()}/{self.view.parent.account_dto.account_id }"
+        endpoint_url = f"{base_url}/transactions/create_transaction/{self.view.le_nume.text()}/{self.view.le_value.text()}/{self.view.cb_typeoftacc.currentText()}/{self.view.parent.account_dto.account_id}/{self.view.parent.account_dto.currency} "
         user_data = make_api_post_request(endpoint_url, headers)
         self.refresher.refresh()
         return user_data

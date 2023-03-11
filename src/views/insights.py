@@ -33,7 +33,8 @@ class InsightsFrame(Ui_InsightsFrame):
         series = QPieSeries()
         series.clear()
         for category in self.category_list:
-            series.append(category, self.controller.get_spending_by_category(self.parent.user.id, datetime.now().month, datetime.now().year, category))
+            if self.controller.get_spending_by_category(self.parent.user.id, datetime.now().month, datetime.now().year, category) > 0:
+                series.append(category, self.controller.get_spending_by_category(self.parent.user.id, datetime.now().month, datetime.now().year, category))
         return series
 
     def create_chart(self):
