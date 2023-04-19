@@ -41,9 +41,13 @@ class WelcomeFrame(Ui_WelcomeFrame):
     def get_fullname(self):
         """Get fullname of the user"""
         fullname = AccountsController.get_details_of_user(self.parent.user.id)
+        if fullname is None:
+            return "No name"
         return fullname[1]
 
     def get_email(self):
         """Get email of the user"""
         email = AccountsController.get_details_of_user(self.parent.user.id)
+        if email is None:
+            return "No email"
         return email[2]

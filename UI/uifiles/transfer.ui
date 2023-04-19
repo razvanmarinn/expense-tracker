@@ -100,6 +100,22 @@ color: #fff
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="l_currency">
+        <property name="font">
+         <font>
+          <family>OCR A Extended</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #fff;</string>
+        </property>
+        <property name="text">
+         <string>Currency</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="l_description">
@@ -156,6 +172,22 @@ color: #fff
         </property>
         <property name="placeholderText">
          <string>Enter value</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="le_currency">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color : #fff</string>
+        </property>
+        <property name="placeholderText">
+         <string>Enter currency</string>
         </property>
        </widget>
       </item>

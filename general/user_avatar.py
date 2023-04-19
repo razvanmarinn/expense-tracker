@@ -37,8 +37,8 @@ class AvatarHandler():  # too be modified into API call
         """Get avatar from database"""
         self.cursor.execute("SELECT avatar FROM user_avatar WHERE user_id = %s", (self.main_window.parent.user.id,))
         avatar = self.cursor.fetchone()
-        ba = QByteArray.fromBase64(bytes(avatar[0]))
         if avatar is not None:
+            byte_array = QByteArray.fromBase64(bytes(avatar[0]))
             pixmap = QPixmap()
-            pixmap.loadFromData(ba)
+            pixmap.loadFromData(byte_array)
             self.main_window.l_photo.setPixmap(pixmap)

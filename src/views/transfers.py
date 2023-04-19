@@ -1,7 +1,6 @@
 """Transfer Frame"""
 from UI.transfer import Ui_TransferFrame
-from general.util import make_api_post_request
-from general.headers import headers, base_url
+from src.controllers.transfer_controller import TransferController
 
 
 class TransferFrame(Ui_TransferFrame):
@@ -9,10 +8,5 @@ class TransferFrame(Ui_TransferFrame):
     def __init__(self, parent):
         Ui_TransferFrame.__init__(self)
         self.parent = parent
-        self.pb_createtransfer.clicked.connect(self.create_transfer)
-
-    def create_transfer(self):
-        """Create a new transfer"""
-        endpoint_url = f"{base_url}/transfer/create_transfer/{self.parent.current_account_id}/{self.le_uuid.text()}/{self.le_value.text()}/{self.le_description.text()}"
-        make_api_post_request(endpoint_url, headers=headers)
-        return 'Transfer created'
+        self.controller = TransferController()
+        self.pb_createtransfer.clicked.connect(lambda: self.controller.create_transfer(self.parent.current_account_id, self.le_username.text(), self.le_value.text(), self.le_currency.text(), self.le_description.text()))
