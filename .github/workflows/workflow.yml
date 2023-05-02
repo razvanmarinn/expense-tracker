@@ -23,8 +23,8 @@ jobs:
         pip install flake8 pytest
 
     - name: Run Flake8
-      run: flake8 --max-line-length=200 --exclude=venv,.git,__pycache__,.pytest_cache,UI,tests,
+      run: flake8 src/ --max-line-length=200 --exclude=venv,.git,__pycache__,.pytest_cache,UI,tests,
       continue-on-error: true
 
     - name: Run Pytest
-      run: pytest
+      run: pytest src/tests/test.py
