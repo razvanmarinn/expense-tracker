@@ -24,4 +24,4 @@ jobs:
 
     - name: Run Flake8
       run: flake8 src/ --max-line-length=200 --exclude=venv,.git,__pycache__,.pytest_cache,UI,tests,
-      continue-on-error: true
+      
